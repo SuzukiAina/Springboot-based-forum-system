@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <!--
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -29,7 +30,7 @@
     </style>
 </head>
 <body>
-<script type="text/javascript" src="canvas/canvas-nest.js"></script>
+<script type="text/javascript" src="../static/canvas/canvas-nest.js"></script>
 <nav class="navbar navbar-default" role="navigation" style="filter: alpha(opacity=50);background-color:rgba(255, 255, 255, 0.3)">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -55,12 +56,14 @@
                 validating: 'glyphicon glyphicon-refresh'//验证中图标
             },
             fields: {
-                username: {
-                    message: '用户名验证失败',
+                email_login: {
                     validators: {
                         notEmpty: {
-                            message: '用户名不能为空'
-                        }
+                            message: '邮箱地址不能为空'
+                        },
+                        emailAddress: {
+                            message: '邮箱地址格式有误'
+                        },
                     }
                 },
                 password: {
@@ -113,13 +116,20 @@
                         }
                     }
                 },
-                email: {
+                email_reg: {
                     validators: {
                         notEmpty: {
                             message: '邮箱地址不能为空'
                         },
                         emailAddress: {
                             message: '邮箱地址格式有误'
+                        },
+                        remote:{
+                            url:'/verifymail',
+                            data:'',
+                            message:'邮箱已被注册',
+                            delay:2000,
+                            type:'POST'
                         }
                     }
                 },
@@ -159,7 +169,7 @@
                 <div class="modal-body" id = "DL-body">
                     <div class="form-group">
                         <label>邮箱地址</label>
-                        <input type="text" class="form-control" placeholder="请输入邮箱地址" autocomplete="off" name="email">
+                        <input type="text" class="form-control" placeholder="请输入邮箱地址" autocomplete="off" name="email_login">
                     </div>
                     <div class="form-group">
                         <label>密码</label>
@@ -192,7 +202,7 @@
                 <div class="modal-body" id = "ZC-body">
                     <div class="form-group">
                         <label class="control-label">邮箱地址</label>
-                        <input type="text" class="form-control" placeholder="请输入邮箱地址" autocomplete="off" name="email">
+                        <input type="text" class="form-control" placeholder="请输入邮箱地址" autocomplete="off" name="email_reg">
                     </div>
                     <div class="form-group">
                         <label class="control-label">昵称</label>
