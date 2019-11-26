@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -23,7 +23,7 @@
 
     <link rel='stylesheet' id='kratos-css' href='kratos/kratos.css' type='text/css' media='all' />
 
-    <title>Title</title>
+    <title>FKBBS</title>
     <style>
         html, body {
             height: 1500px;
@@ -39,10 +39,10 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">FK论坛</a>
+            <a class="navbar-brand" th:href="@{/main}">FK论坛</a>
         </div>
         <div id="help">
-            <div v-if="1==2">
+            <div th:if="${USER_NAME} ne null">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -55,16 +55,24 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#">
+                        <a th:href="@{/logout}">
                             <span class="glyphicon glyphicon-log-out"></span> 登出
                         </a>
                     </li>
                 </ul>
             </div>
-            <div v-else>
+            <div th:if="${USER_NAME} eq null">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><button class="btn btn-default" data-toggle="modal" data-target="#DLModal" style="margin-top: 8px;margin-right: 10px">登录</button></li>
-                    <li><button class="btn btn-default" data-toggle="modal" data-target="#ZCModal" style="margin-top: 8px;">注册</button></li>
+                    <li>
+                        <a th:href="@{/login}">
+                            <span class="glyphicon glyphicon-log-in"> 登录</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/reg}">
+                            <span class="glyphicon glyphicon-send"> 注册</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -75,197 +83,6 @@
         el: '#help'
     })
 </script>
-<script type="text/javascript">
-    $(function () {
-        $('.DLmodal').bootstrapValidator({
-            message: 'This value is not valid',
-            feedbackIcons: {
-                valid: "glyphicon glyphicon-ok",//验证成功图标
-                invalid: 'glyphicon glyphicon-remove',//验证失败图标
-                validating: 'glyphicon glyphicon-refresh'//验证中图标
-            },
-            fields: {
-                email_login: {
-                    validators: {
-                        notEmpty: {
-                            message: '邮箱地址不能为空'
-                        },
-                        emailAddress: {
-                            message: '邮箱地址格式有误'
-                        },
-                    }
-                },
-                password: {
-                    validators: {
-                        notEmpty: {
-                            message: '密码不能为空'
-                        },
-                    }
-                },
-                email: {
-                    validators: {
-                        notEmpty: {
-                            message: '邮箱不能为空'
-                        },
-                        emailAddress: {
-                            message: '邮箱地址格式有误'
-                        }
-                    }
-                }
-            }
-        });
-        $('.ZCmodal').bootstrapValidator({
-            message: 'This value is not valid',
-            feedbackIcons: {
-                valid: "glyphicon glyphicon-ok",//验证成功图标
-                invalid: 'glyphicon glyphicon-remove',//验证失败图标
-                validating: 'glyphicon glyphicon-refresh'//验证中图标
-            },
-            fields: {
-                password: {
-                    validators: {
-                        notEmpty: {
-                            message: '密码不能为空'
-                        },
-                        stringLength: {
-                            min:6,
-                            max:10,
-                            message: '密码长度必须在6到10位之间'
-                        }
-                    }
-                },
-                re_password: {
-                    validators: {
-                        notEmpty: {
-                            message: '密码不能为空'
-                        },
-                        identical: {
-                            field:'password',
-                            message:'两次输入密码不同'
-                        }
-                    }
-                },
-                email_reg: {
-                    validators: {
-                        notEmpty: {
-                            message: '邮箱地址不能为空'
-                        },
-                        emailAddress: {
-                            message: '邮箱地址格式有误'
-                        },
-                        remote:{
-                            url:'/verifymail',
-                            data:'',
-                            message:'邮箱已被注册',
-                            delay:2000,
-                            type:'POST'
-                        }
-                    }
-                },
-                nickname: {
-                    validators: {
-                        notEmpty: {
-                            message: '昵称不能为空'
-                        },
-                        stringLength: {
-                            max:8,
-                            message: '昵称不能大于八位字符'
-                        }
-                    }
-                },
-                date: {
-                    validators: {
-                        data: {
-                            message: '不是合法的日期',
-                        },
-                        notEmpty: {
-                            message: '日期不能为空',
-                        },
-                    }
-                },
-            }
-        });
-    });
-</script>
-<div class="modal fade" id="DLModal" tabindex="-1" role="dialog" aria-labelledby="DLModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin-top: 11.5%">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h2 class="modal-title text-center" id="DLModalLabel">登录</h2>
-            </div>
-            <form class="DLmodal" action="/login">
-                <div class="modal-body" id = "DL-body">
-                    <div class="form-group">
-                        <label>邮箱地址</label>
-                        <input type="text" class="form-control" placeholder="请输入邮箱地址" autocomplete="off" name="email_login">
-                    </div>
-                    <div class="form-group">
-                        <label>密码</label>
-                        <input type="password" class="form-control" placeholder="请输入密码" autocomplete="off" name="password">
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label><input type="checkbox" > 请记住我</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary form-control">登录</button>
-                    </div>
-                    <div class="form-group">
-                        <button type="button" data-dismiss="modal" class="btn btn-default form-control" data-toggle="modal" data-target="#ZCModal">注册</button>
-                    </div>
-                </div>
-            </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
-<div class="modal fade" id="ZCModal" tabindex="-1" role="dialog" aria-labelledby="ZCModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin-top: 8%">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h2 class="modal-title text-center" id="ZCModalLabel">注册</h2>
-            </div>
-            <form class="ZCmodal">
-                <div class="modal-body" id = "ZC-body">
-                    <div class="form-group">
-                        <label class="control-label">邮箱地址</label>
-                        <input type="text" class="form-control" placeholder="请输入邮箱地址" autocomplete="off" name="email_reg">
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">昵称</label>
-                        <input type="text" class="form-control" placeholder="请输入昵称" autocomplete="off" name="nickname">
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">密码</label>
-                        <input type="password" class="form-control" placeholder="请输入密码" autocomplete="off" name="password">
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">确认密码</label>
-                        <input type="password" class="form-control" placeholder="请再一次输入密码" autocomplete="off" name="re_password">
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">出生年月</label>
-                        <input type="date" class="form-control" name="date">
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">性别</label><br>
-                        <label>
-                            <input type="radio" name="radio" id="gender_m" value="m" checked>男
-                        </label>
-                        <label style="margin-left: 5px">
-                            <input type="radio" name="radio" id="gender_w" value="w">女
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary form-control">注册</button>
-                    </div>
-                </div>
-            </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
 <div class="kratos-start kratos-hero-2">
     <div class="kratos-overlay"></div>
     <div class="kratos-cover kratos-cover_2 text-center">

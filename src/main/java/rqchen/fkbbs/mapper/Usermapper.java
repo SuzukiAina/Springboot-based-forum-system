@@ -21,11 +21,14 @@ public interface Usermapper {
     public int UpdateUser(User user);
 
     @Insert("insert into USER(USER_ID,USER_MAIL,USER_NAME,USER_SEX,USER_BIRTH,ROLE,USER_PASSWORD) " +
-            "values (NULL,#{User_mail},#{User_name},#{User_sex},#{User_birth},NULL,#{User_password})")
+            "values (NULL,#{User_mail},#{User_name},#{User_sex},#{User_birth},#{Role},#{User_password})")
     public int InsertUser(User user);
 
-    @Select("select * from USER where USER_MAIL=#{mail} AND USER_PASSWORD=#{pwd}")
-    public User getUserByInfo(String mail,String pwd);
+    @Select("select USER_PASSWORD from USER where USER_MAIL=#{mail}")
+    public String getUserByInfo(String mail);
+
+    @Select("select * from USER where USER_MAIL=#{mail}")
+    public User getUser(String mail);
 
     @Select("select * from USER where USER_MAIL=#{mail}")
     public User getUserByMail(String mail);

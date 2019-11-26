@@ -9,6 +9,16 @@ public class User {
     String Role;
     String User_password;
 
+    public User(String email_reg, String nickname, String sex, String birth, String i, String password) {
+        User_mail=email_reg;
+        User_name=nickname;
+        User_sex=sex;
+        User_birth=birth;
+        User_sex=i;
+        User_password=password;
+        Role="0";
+    }
+
     public String getUser_id() {
         return User_id;
     }
@@ -63,5 +73,18 @@ public class User {
 
     public void setUser_password(String user_password) {
         User_password = user_password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "User_id='" + User_id + '\'' +
+                ", User_mail='" + User_mail + '\'' +
+                ", User_name='" + User_name + '\'' +
+                ", User_sex='" + User_sex + '\'' +
+                ", User_birth='" + User_birth + '\'' +
+                ", Role='" + Role + '\'' +
+                ", User_password='" + User_password + '\'' +
+                '}';
     }
 }

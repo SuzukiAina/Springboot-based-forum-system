@@ -30,7 +30,9 @@ public class UserService {
         return usermapper.getUserById(id);
     }
 
-    public User login(String mail,String pwd){return usermapper.getUserByInfo(mail, pwd);}
+    public String login(String mail){return usermapper.getUserByInfo(mail);}
 
     public User verifymail(String mail){return usermapper.getUserByMail(mail);}
+
+    public User getUser(String mail){return usermapper.getUser(mail);}
 }
