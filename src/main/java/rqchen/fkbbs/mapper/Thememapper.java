@@ -21,4 +21,7 @@ public interface Thememapper {
 
     @Insert("insert into THEME(THEME_ID,USER_ID,THEME_TITLE,THEME_CONTENT,THEME_TIME) values (NULL,#{User_id},#{Theme_title},#{Theme_content},#{Theme_time})")
     public int InsertTheme(Theme theme);
+
+    @Select("select count(THEME_ID) from THEME")
+    public int getThemeCount();
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import rqchen.fkbbs.entity.Theme;
 import rqchen.fkbbs.entity.User;
 import rqchen.fkbbs.service.ThemeService;
@@ -15,15 +16,26 @@ import javax.servlet.http.HttpServletRequest;
 public class Theme_controller {
     @Autowired
     ThemeService themeService;
-    @RequestMapping("/{id}")
-    public String theme_content(@PathVariable("id") String id, Model model, HttpServletRequest request){
+    @RequestMapping("/theme")
+    public String theme_content(@RequestParam(value ="id") String id, Model model, HttpServletRequest request){
         int ID=Integer.parseInt(id);
         Theme theme=themeService.getById(ID);
         model.addAttribute("themes",theme);
+
         User user = (User)request.getSession().getAttribute("user");
-        if(user!=null){
-            model.addAttribute("USER_NAME",user.getUser_name());
+        if(user==null){
+            return "main";
         }
+        String role=user.getRole();
+        System.out.println(role);
+        if(role.equals("1")){
+            System.out.println("是个管理员");
+            model.addAttribute("ROLE",1);
+        }else {
+            System.out.println("是个用户");
+            model.addAttribute("ROLE",0);
+        }
+        model.addAttribute("USER_NAME",user.getUser_name());
         return "theme_content";
     }
 }

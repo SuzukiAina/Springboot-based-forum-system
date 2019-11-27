@@ -39,6 +39,20 @@ public class Main_controller {
     @GetMapping(value = "/main")
     public String main(HttpServletRequest request,Model model){
         model.addAttribute("themes",themeService.themeList());
+        int count=themeService.getCount();
+        int page_number=(count/20)+1;
+        System.out.println(page_number);
+        int min_page,max_page;
+        if(page_number>4){
+            min_page=page_number-4;
+            max_page=page_number;
+        }else {
+            min_page=1;
+            max_page=page_number;
+        }
+        model.addAttribute("min_page",min_page);
+        model.addAttribute("max_page",max_page);
+
         User user = (User)request.getSession().getAttribute("user");
         if(user==null){
             return "main";
@@ -53,7 +67,7 @@ public class Main_controller {
             model.addAttribute("ROLE",0);
         }
         model.addAttribute("USER_NAME",user.getUser_name());
-        System.out.println(user.getUser_name());
+
         return "main";
     }
     

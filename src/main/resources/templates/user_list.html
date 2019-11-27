@@ -17,8 +17,15 @@
 
     <link href="https://cdn.bootcss.com/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+
+    <link rel='stylesheet' id='kratos-css' href='kratos/kratos.css' type='text/css' media='all' />
     <meta charset="UTF-8">
-    <title>登录页面</title>
+    <title>用户管理</title>
+    <style>
+        .kratos-start.kratos-hero-2 {
+            height: 240px;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -26,8 +33,58 @@
         <div class="navbar-header">
             <a class="navbar-brand" th:href="@{/main}">FK论坛</a>
         </div>
+        <div id="help">
+            <div th:if="${USER_NAME} ne null">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <!--/*@thymesVar id="USER_NAME" type=""*/-->
+                            <div th:if="${ROLE} eq 1">
+                                <span class="glyphicon glyphicon-user" th:text="' hi! 管理员'+${USER_NAME}"/><span class="caret"></span>
+                            </div>
+                            <div th:if="${ROLE} eq 0">
+                                <span class="glyphicon glyphicon-user" th:text="' hi! 用户'+${USER_NAME}"/><span class="caret"></span>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
+                            <li><a th:href="@{/publish}"><span class="glyphicon glyphicon-tags"> 发布新帖</span></a></a></li>
+                            <li th:if="${ROLE} eq 1"><a href="#"><span class="glyphicon glyphicon-wrench"> 管理用户</span></a></li>
+                            <li th:if="${ROLE} eq 1"><a href="#"><span class="glyphicon glyphicon-th-list"> 管理帖子</span></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a th:href="@{/logout}">
+                            <span class="glyphicon glyphicon-log-out"></span> 登出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div th:if="${USER_NAME} eq null">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a th:href="@{/login}">
+                            <span class="glyphicon glyphicon-log-in"> 登录</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/reg}">
+                            <span class="glyphicon glyphicon-send"> 注册</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </nav>
+<div class="kratos-start kratos-hero-2">
+    <div class="kratos-overlay"></div>
+    <div class="kratos-cover kratos-cover_2 text-center">
+        <div class="desc desc2 animate-box">
+            <a><h2>用户管理</h2></a>
+        </div>
+    </div>
+</div>
 <div class="mainContent" style="padding: 20px">
     <div class="row">
         <div class="col-md-10 col-md-offset-1 footer-list text-center">

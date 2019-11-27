@@ -31,4 +31,6 @@ public class ThemeService {
     public Theme getById(Integer id) {
         return themeMapper.getThemeById(id);
     }
+
+    public int getCount(){return themeMapper.getThemeCount();}
 }
