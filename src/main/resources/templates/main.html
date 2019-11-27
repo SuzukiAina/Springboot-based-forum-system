@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" type="image/x-icon" href="icon/fkbbs.ico";>
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <!--
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -30,7 +31,7 @@
             width: 100%;
         }
         .kratos-cover_2{
-            background-image:url("1.jpg");
+            background-image:url("img/timg.jpg");
         }
 
     </style>
@@ -47,11 +48,18 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <!--/*@thymesVar id="USER_NAME" type=""*/-->
-                            <span class="glyphicon glyphicon-user" th:text="' hi! '+${USER_NAME}"/><span class="caret"></span>
+                            <div th:if="${ROLE} eq 1">
+                                <span class="glyphicon glyphicon-user" th:text="' hi! 管理员'+${USER_NAME}"/><span class="caret"></span>
+                            </div>
+                            <div th:if="${ROLE} eq 0">
+                                <span class="glyphicon glyphicon-user" th:text="' hi! 用户'+${USER_NAME}"/><span class="caret"></span>
+                            </div>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="#"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-tags"> 发布新帖</span></a></a></li>
+                            <li><a th:href="@{/publish}"><span class="glyphicon glyphicon-tags"> 发布新帖</span></a></a></li>
+                            <li th:if="${ROLE} eq 1"><a href="#"><span class="glyphicon glyphicon-wrench"> 管理用户</span></a></li>
+                            <li th:if="${ROLE} eq 1"><a href="#"><span class="glyphicon glyphicon-th-list"> 管理帖子</span></a></li>
                         </ul>
                     </li>
                     <li>
@@ -89,23 +97,15 @@
 <div class="mainContent" style="padding: 20px">
     <div class="row">
         <div class="col-md-10 col-md-offset-1 footer-list text-center">
-            <article class="kratos-hentry clearfix">
+            <article class="kratos-hentry clearfix" th:each="theme:${themes}" style="margin-top: 0px">
             <div class="kratos-entry-border-new clearfix" align="left">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th width="5%">帖子热度</th>
-                        <th width="60%">帖子名称</th>
-                        <th>发帖信息</th>
-                        <th>回帖信息</th>
-                    </tr>
-                    </thead>
+                <table class="table table-striped" style="margin-bottom: 0">
                     <tbody>
-                    <tr th:each="theme:${themes}">
-                        <td></td>
-                        <td th:text="${theme.getTheme_title()}"></td>
+                    <tr>
+                        <td width="5%"></td>
+                        <td width="40%" th:text="${theme.getTheme_title()}"></td>
+                        <td width="40%" th:text="${theme.getTheme_content()}"></td>
                         <td th:text="${theme.getUser_id()}"></td>
-                        <td></td>
                     </tr>
                     </tbody>
                 </table>

@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="icon/fkbbs.ico";>
     <title>发布新帖</title>
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <!--
@@ -24,6 +25,42 @@
     <link rel='stylesheet' id='kratos-css' href='kratos/kratos.css' type='text/css' media='all' />
 </head>
 <body>
+<script type="text/javascript">
+    $(function () {
+        $('.publish').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: "glyphicon glyphicon-ok",//验证成功图标
+                invalid: 'glyphicon glyphicon-remove',//验证失败图标
+                validating: 'glyphicon glyphicon-refresh'//验证中图标
+            },
+            fields: {
+                title: {
+                    validators: {
+                        notEmpty: {
+                            message: '标题不能为空'
+                        },
+                        stringLength: {
+                            max:25,
+                            message: '标题必须在25字之内'
+                        }
+                    }
+                },
+                description: {
+                    validators: {
+                        notEmpty: {
+                            message: '内容不能为空'
+                        },
+                        stringLength: {
+                            max:100,
+                            message: '内容必须在100字之内'
+                        }
+                    }
+                },
+            }
+        });
+    });
+</script>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -66,12 +103,12 @@
         </div>
     </div>
 </nav>
-<div class="container-fluid main" style="margin-top: 70px">
+<div class="container-fluid main" style="margin-top: 70px" id="publish">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发帖</h2>
             <hr>
-            <form action="/publish" method="post">
+            <form class="publish" th:action="@{publishinsert}" method="post">
                 <input type="hidden" name="id" >
                 <div class="form-group">
                     <label for="title">帖子标题 （简单扼要）：</label>

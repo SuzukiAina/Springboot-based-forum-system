@@ -27,9 +27,13 @@ public class Login_controller {
         System.out.println(password);
         String pwd=userService.login(email_login);
         System.out.println(pwd);
+        if(pwd==null){
+            map.put("msg", "用户名不存在");
+            return "login";
+        }
         if (!pwd.equals(password)) {
-            map.put("msg", "用户名或者密码错误");
-            return "login_controller";
+            map.put("msg", "密码错误");
+            return "login";
         }else {
             User user=null;
             user=userService.getUser(email_login);

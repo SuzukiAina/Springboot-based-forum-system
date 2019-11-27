@@ -43,6 +43,15 @@ public class Main_controller {
         if(user==null){
             return "main";
         }
+        String role=user.getRole();
+        System.out.println(role);
+        if(role.equals("1")){
+            System.out.println("是个管理员");
+            model.addAttribute("ROLE",1);
+        }else {
+            System.out.println("是个用户");
+            model.addAttribute("ROLE",0);
+        }
         model.addAttribute("USER_NAME",user.getUser_name());
         System.out.println(user.getUser_name());
         return "main";

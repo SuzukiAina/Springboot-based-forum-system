@@ -2,6 +2,7 @@ package rqchen.fkbbs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import rqchen.fkbbs.entity.Theme;
@@ -18,7 +19,12 @@ public class Publish_controller {
     @Autowired
     ThemeService themeService;
     @RequestMapping("/publish")
-    public String pulish(){
+    public String pulish(HttpServletRequest request, Model model){
+        User user = (User)request.getSession().getAttribute("user");
+        if(user==null){
+            return "redirect:main";
+        }
+        model.addAttribute("USER_NAME",user.getUser_name());
         return "publish";
     }
 
@@ -29,6 +35,7 @@ public class Publish_controller {
         String Time = simpleDateFormat.format(date);   //格式化后的时间
         User user = (User)request.getSession().getAttribute("user");
         Theme theme=new Theme(title,description,Time,user.getUser_id());
-        return "theme";
+        themeService.insert(theme);
+        return "redirect:main";
     }
 }
