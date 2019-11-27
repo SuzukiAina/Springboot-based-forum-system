@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
-public class Login {
+public class Login_controller {
     @Autowired
     ThemeService themeService;
     @Autowired
@@ -29,7 +29,7 @@ public class Login {
         System.out.println(pwd);
         if (!pwd.equals(password)) {
             map.put("msg", "用户名或者密码错误");
-            return "login";
+            return "login_controller";
         }else {
             User user=null;
             user=userService.getUser(email_login);

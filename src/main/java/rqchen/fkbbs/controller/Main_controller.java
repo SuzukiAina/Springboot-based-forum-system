@@ -14,6 +14,9 @@ import rqchen.fkbbs.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +29,10 @@ public class Main_controller {
 
     @RequestMapping("/hello")
     public String hello(){
+        Date date=new Date();     //获取一个Date对象
+        DateFormat simpleDateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   //创建一个格式化日期对象
+        String Time = simpleDateFormat.format(date);   //格式化后的时间
+        System.out.println(Time);
         return "hello";
     }
 

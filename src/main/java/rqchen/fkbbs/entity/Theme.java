@@ -46,4 +46,11 @@ public class Theme {
     public void setUser_id(String user_id) {
         User_id = user_id;
     }
+
+    public Theme(String theme_title, String theme_content, String theme_time, String user_id) {
+        Theme_title = theme_title;
+        Theme_content = theme_content;
+        Theme_time = theme_time;
+        User_id = user_id;
+    }
 }

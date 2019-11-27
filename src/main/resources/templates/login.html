@@ -62,7 +62,14 @@
         });
     });
 </script>
-<div class="modal-dialog" style="margin-top: 10%;">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/main}">FK论坛</a>
+        </div>
+    </div>
+</nav>
+<div class="modal-dialog" style="margin-top: 12%;">
     <form class="DLmodal" th:action="@{loginpost}" method="post">
     <div class="modal-content">
         <div class="modal-header">
@@ -92,5 +99,6 @@
     </div><!-- /.modal-content -->
     </form>
 </div><!-- /.modal -->
+<script type="text/javascript" zIndex='-1' opacity='1' count='99' src="canvas/canvas-nest.js"></script>
 </body>
 </html>

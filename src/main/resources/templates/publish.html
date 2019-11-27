@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>发布新帖</title>
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <!--
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -22,18 +22,6 @@
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.common.dev.js"></script>
 
     <link rel='stylesheet' id='kratos-css' href='kratos/kratos.css' type='text/css' media='all' />
-
-    <title>FKBBS</title>
-    <style>
-        html, body {
-            height: 1500px;
-            width: 100%;
-        }
-        .kratos-cover_2{
-            background-image:url("1.jpg");
-        }
-
-    </style>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -78,42 +66,32 @@
         </div>
     </div>
 </nav>
-<div class="kratos-start kratos-hero-2">
-    <div class="kratos-overlay"></div>
-    <div class="kratos-cover kratos-cover_2 text-center">
-        <div class="desc desc2 animate-box">
-            <a><h2>F K B B S</h2><br><span>FUTURE KNOWLEDGE</span></a>
-        </div>
-    </div>
-</div>
-<div class="mainContent" style="padding: 20px">
+<div class="container-fluid main" style="margin-top: 70px">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1 footer-list text-center">
-            <article class="kratos-hentry clearfix">
-            <div class="kratos-entry-border-new clearfix" align="left">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th width="5%">帖子热度</th>
-                        <th width="60%">帖子名称</th>
-                        <th>发帖信息</th>
-                        <th>回帖信息</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="theme:${themes}">
-                        <td></td>
-                        <td th:text="${theme.getTheme_title()}"></td>
-                        <td th:text="${theme.getUser_id()}"></td>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            </article>
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发帖</h2>
+            <hr>
+            <form action="/publish" method="post">
+                <input type="hidden" name="id" >
+                <div class="form-group">
+                    <label for="title">帖子标题 （简单扼要）：</label>
+                    <input type="text" class="form-control"  id="title" name="title" placeholder="问题标题......">
+                </div>
+                <div class="form-group">
+                    <label for="description">帖子内容 ：</label>
+                    <textarea name="description" id="description" class="form-control" cols="30" rows="10" placeholder="内容......"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary form-control" style="margin-top: 15px">发布</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>问题发起指南</h3>
+            · 帖子标题：请用精简的语言描述你发布的问题，不超过25个字 <br>
+            · 帖子内容：请详细补充您的内容，并确保描述清晰直观<br>
         </div>
     </div>
 </div>
-<script type="text/javascript" zIndex='-1' opacity='1' count='99' src="canvas/canvas-nest.js"></script>
 </body>
 </html>
