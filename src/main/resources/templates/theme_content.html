@@ -120,29 +120,31 @@
 <div class="mainContent" style="padding: 20px">
     <div class="row">
         <div class="col-md-10 col-md-offset-1 footer-list text-center">
-            <article class="kratos-hentry clearfix">
+            <article class="kratos-hentry clearfix" style="padding: 25px 10px 18px 10px;">
                 <div class="kratos-entry-border-new clearfix" align="left">
-                    <table class="table table-striped" style="margin-bottom: 0">
-                        <thead>
-                        <tr>
-                            <th width="5%">帖子id</th>
-                            <th width="60%">用户id</th>
-                            <th>帖子标题</th>
-                            <th>帖子内容</th>
-                            <th>帖子时间</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="theme:${themes}">
-                            <td th:text="${theme.getTheme_id()}"></td>
-                            <td th:text="${theme.getUser_id()}"></td>
-                            <td th:text="${theme.getTheme_title()}"></td>
-                            <td th:text="${theme.getTheme_content()}"></td>
-                            <td th:text="${theme.getTheme_time()}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <header class="kratos-entry-header">
+                        <h1 class="kratos-entry-title text-center" th:text="${theme.getTheme_title()}"></h1>
+                        <div class="kratos-post-meta text-center">
+                            <span>
+                                <span class="glyphicon glyphicon-calendar" th:text="${theme.getTheme_time()}"></span>
+                                <span class="glyphicon glyphicon-calendar" th:text="${theme.getReply_number()}+'人回复'" style="margin-left: 12px;"></span>
+                                <span class="glyphicon glyphicon-user" th:text="${theme.getUser_name()}" style="margin-left: 12px;"></span>
+                            </span>
+                        </div>
+                    </header>
+                    <p th:text="${theme.getTheme_content()}" style="margin: 10px"></p>
                 </div>
+                <footer class="kratos-entry-footer clearfix">
+                    <div class="footer-tag clearfix">
+                        <div class="pull-left">
+                            <i class="fa fa-tags"></i>
+                            <a rel="tag">楼主</a>
+                        </div>
+                        <div class="pull-date">
+                            <span th:text="'发布于'+${theme.getTheme_time()}"></span>
+                        </div>
+                    </div>
+                </footer>
             </article>
         </div>
     </div>

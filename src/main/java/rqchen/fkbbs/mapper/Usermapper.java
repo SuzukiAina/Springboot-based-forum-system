@@ -32,4 +32,7 @@ public interface Usermapper {
 
     @Select("select * from USER where USER_MAIL=#{mail}")
     public User getUserByMail(String mail);
+
+    @Select("select USER_NAME from USER where USER_ID=#{id}")
+    public String getUserNmaeById(Integer id);
 }

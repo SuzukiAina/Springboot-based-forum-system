@@ -9,6 +9,22 @@ public class Theme {
     String User_name;
     String Reply_number;
 
+    public String getUser_name() {
+        return User_name;
+    }
+
+    public void setUser_name(String user_name) {
+        User_name = user_name;
+    }
+
+    public String getReply_number() {
+        return Reply_number;
+    }
+
+    public void setReply_number(String reply_number) {
+        Reply_number = reply_number;
+    }
+
     public String getTheme_id() {
         return Theme_id;
     }

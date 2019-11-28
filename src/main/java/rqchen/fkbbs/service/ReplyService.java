@@ -31,4 +31,6 @@ public class ReplyService {
     public Reply getById(Integer id) {
         return replyMapper.getReplyById(id);
     }
+
+    public int getCount(Integer theme_id){return replyMapper.getReplyCount(theme_id);}
 }

@@ -21,4 +21,7 @@ public interface Replymapper {
 
     @Insert("insert into REPLY(REPLY_ID,USER_ID,THEME_ID,REPLY_CONTENT,REPLY_TIME) values (NULL,#{User_id},#{Theme_id},#{Reply_content},#{Reply_time})")
     public int InsertReply(Reply reply);
+
+    @Select("select count(REPLY_ID) from REPLY where THEME_ID=#{theme_id}")
+    public int getReplyCount(Integer theme_id);
 }

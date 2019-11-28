@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import rqchen.fkbbs.entity.Theme;
 import rqchen.fkbbs.entity.User;
+import rqchen.fkbbs.service.ReplyService;
 import rqchen.fkbbs.service.ThemeService;
 import rqchen.fkbbs.service.UserService;
 
@@ -18,6 +20,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -26,6 +29,8 @@ public class Main_controller {
     ThemeService themeService;
     @Autowired
     UserService userService;
+    @Autowired
+    ReplyService replyService;
 
     @RequestMapping("/hello")
     public String hello(){
@@ -38,7 +43,16 @@ public class Main_controller {
 
     @GetMapping(value = "/main")
     public String main(HttpServletRequest request,Model model){
-        model.addAttribute("themes",themeService.themeList());
+        List<Theme> themeList=themeService.themeList();
+        model.addAttribute("themes",themeList);
+        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        for (Theme theme : themeList) {
+            Integer ID=Integer.parseInt(theme.getTheme_id());
+            Integer id=Integer.parseInt(theme.getUser_id());
+            theme.setUser_name(userService.getUserName(id));
+            theme.setReply_number(String.valueOf(replyService.getCount(ID)));
+            theme.setTheme_time(theme.getTheme_time().substring(0,10));
+        }
         int count=themeService.getCount();
         int page_number=(count/20)+1;
         System.out.println(page_number);
@@ -67,7 +81,6 @@ public class Main_controller {
             model.addAttribute("ROLE",0);
         }
         model.addAttribute("USER_NAME",user.getUser_name());
-
         return "main";
     }
     

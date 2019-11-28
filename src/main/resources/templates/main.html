@@ -104,16 +104,16 @@
                 <table class="table" style="margin: 0 auto">
                     <tbody>
                     <tr>
-                        <td th:text="${theme.getTheme_id()}"></td>
-                        <td th:text="${theme.getTheme_title()}" width="80%" style="font-size: 20px"></td>
-                        <td th:text="${theme.getUser_id()}"></td>
+                        <td><span class="glyphicon glyphicon-calendar" th:text="${theme.getReply_number()}+'人回复'" style="margin-left: 12px;font-size: 10px;padding: 4px"></span></td>
+                        <td width="70%" style="font-size: 20px;padding: 4px"><h4><a th:text="${theme.getTheme_title()}" th:href="@{/theme(id=${theme.getTheme_id()})}"></a></h4></td>
+                        <td style="padding: 4px"><h5><span class="glyphicon glyphicon-user"><a th:text="${theme.getUser_name()}" style="padding-left: 3px"></a></span></h5></td>
                         <td>    </td>
                     </tr>
                     <tr>
                         <td>                   </td>
-                        <td th:text="${theme.getTheme_content()}" width="80%" style="font-size: 20px"></td>
-                        <td th:text="${theme.getUser_id()}"></td>
-                        <td th:text="${theme.getTheme_time()}"></td>
+                        <td style="font-size: 20px;padding: 4px"><h4 th:text="${theme.getTheme_content()}" width="70%"></h4></td>
+                        <td style="padding: 4px"><h5><span class="glyphicon glyphicon-comment"><a th:text="${theme.getUser_name()}" style="padding-left: 3px"></a></span></h5></td>
+                        <td style="padding: 4px"><h5 th:text="'发布于'+${theme.getTheme_time()}"></h5></td>
                     </tr>
                     </tbody>
                 </table>

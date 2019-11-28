@@ -35,4 +35,6 @@ public class UserService {
     public User verifymail(String mail){return usermapper.getUserByMail(mail);}
 
     public User getUser(String mail){return usermapper.getUser(mail);}
+
+    public String getUserName(Integer id){return usermapper.getUserNmaeById(id);}
 }
