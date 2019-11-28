@@ -33,7 +33,9 @@
         .kratos-cover_2{
             background-image:url("img/timg.jpg");
         }
-
+        .table>tbody>tr>td{
+            border:0px;
+        }
     </style>
 </head>
 <body>
@@ -99,13 +101,19 @@
         <div class="col-md-10 col-md-offset-1 footer-list text-center">
             <article class="kratos-hentry clearfix" th:each="theme:${themes}" style="margin-top: 0px">
             <div class="kratos-entry-border-new clearfix" align="left">
-                <table class="table table-striped" style="margin-bottom: 0">
+                <table class="table" style="margin: 0 auto">
                     <tbody>
                     <tr>
-                        <td width="5%"></td>
-                        <td width="40%" th:text="${theme.getTheme_title()}"></td>
-                        <td width="40%" th:text="${theme.getTheme_content()}"></td>
+                        <td th:text="${theme.getTheme_id()}"></td>
+                        <td th:text="${theme.getTheme_title()}" width="80%" style="font-size: 20px"></td>
                         <td th:text="${theme.getUser_id()}"></td>
+                        <td>    </td>
+                    </tr>
+                    <tr>
+                        <td>                   </td>
+                        <td th:text="${theme.getTheme_content()}" width="80%" style="font-size: 20px"></td>
+                        <td th:text="${theme.getUser_id()}"></td>
+                        <td th:text="${theme.getTheme_time()}"></td>
                     </tr>
                     </tbody>
                 </table>

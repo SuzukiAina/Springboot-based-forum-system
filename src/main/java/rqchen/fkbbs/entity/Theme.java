@@ -6,6 +6,8 @@ public class Theme {
     String Theme_content;
     String Theme_time;
     String User_id;
+    String User_name;
+    String Reply_number;
 
     public String getTheme_id() {
         return Theme_id;
