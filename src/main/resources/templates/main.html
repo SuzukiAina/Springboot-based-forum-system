@@ -36,6 +36,12 @@
         .table>tbody>tr>td{
             border:0px;
         }
+        a:-webkit-any-link {
+            cursor: pointer;
+        }
+        a{
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -104,16 +110,16 @@
                 <table class="table" style="margin: 0 auto">
                     <tbody>
                     <tr>
-                        <td><span class="glyphicon glyphicon-calendar" th:text="${theme.getReply_number()}+'人回复'" style="margin-left: 12px;font-size: 10px;padding: 4px"></span></td>
+                        <td width="10%"><span class="glyphicon glyphicon-calendar" th:text="${theme.getReply_number()}+'人回复'" style="margin-left: 12px;font-size: 10px;padding: 4px"></span></td>
                         <td width="70%" style="font-size: 20px;padding: 4px"><h4><a th:text="${theme.getTheme_title()}" th:href="@{/theme(id=${theme.getTheme_id()})}"></a></h4></td>
-                        <td style="padding: 4px"><h5><span class="glyphicon glyphicon-user"><a th:text="${theme.getUser_name()}" style="padding-left: 3px"></a></span></h5></td>
+                        <td style="padding: 4px" width="12%"><h5><span class="glyphicon glyphicon-user"><a th:text="${theme.getUser_name()}" style="padding-left: 3px;cursor: pointer;"></a></span></h5></td>
                         <td>    </td>
                     </tr>
                     <tr>
                         <td>                   </td>
                         <td style="font-size: 20px;padding: 4px"><h4 th:text="${theme.getTheme_content()}" width="70%"></h4></td>
-                        <td style="padding: 4px"><h5><span class="glyphicon glyphicon-comment"><a th:text="${theme.getUser_name()}" style="padding-left: 3px"></a></span></h5></td>
-                        <td style="padding: 4px"><h5 th:text="'发布于'+${theme.getTheme_time()}"></h5></td>
+                        <td style="padding: 4px"><h5><span class="glyphicon glyphicon-comment"><a th:text="${theme.getUser_name()}" style="padding-left: 3px;cursor: pointer;"></a></span></h5></td>
+                        <td style="padding: 4px" width="12%"><h5 th:text="'发布于'+${theme.getTheme_time()}"></h5></td>
                     </tr>
                     </tbody>
                 </table>
