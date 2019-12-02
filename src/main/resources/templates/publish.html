@@ -63,7 +63,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" th:href="@{/main}">FK论坛</a>
+            <a class="navbar-brand" th:href="@{/}">FK论坛</a>
         </div>
         <div id="help">
             <div th:if="${USER_NAME} ne null">
@@ -108,7 +108,7 @@
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发帖</h2>
             <hr>
             <form class="publish" th:action="@{publishinsert}" method="post" accept-charset="UTF-8">
-                <input type="hidden" name="id" >
+                <input type="hidden" name="id">
                 <div class="form-group">
                     <label for="title">帖子标题 （简单扼要）：</label>
                     <input type="text" class="form-control"  id="title" name="title" placeholder="问题标题......">

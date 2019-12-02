@@ -7,6 +7,15 @@ public class Reply {
     String Reply_time;
     String User_id;
     String User_name;
+    int Floor;
+
+    public int getFloor() {
+        return Floor;
+    }
+
+    public void setFloor(int floor) {
+        Floor = floor;
+    }
 
     public String getUser_name() {
         return User_name;
@@ -53,6 +62,13 @@ public class Reply {
     }
 
     public void setUser_id(String user_id) {
+        User_id = user_id;
+    }
+
+    public Reply(String theme_id, String reply_content, String reply_time, String user_id) {
+        Theme_id = theme_id;
+        Reply_content = reply_content;
+        Reply_time = reply_time;
         User_id = user_id;
     }
 }

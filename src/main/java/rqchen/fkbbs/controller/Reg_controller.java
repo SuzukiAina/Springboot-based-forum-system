@@ -25,6 +25,6 @@ public class Reg_controller {
         user.toString();
         userService.insert(user);
         request.getSession().setAttribute("user",user);
-        return "redirect:/main";
+        return "redirect:/main?page=1";
     }
 }

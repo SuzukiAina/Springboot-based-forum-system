@@ -27,9 +27,6 @@
             height: 1500px;
             width: 100%;
         }
-        .row {
-            margin-top: 50px;
-        }
         .kratos-hentry.kratos-post-inner .kratos-post-meta .fa-thumbs-o-up,.kratos-post-meta i:not(:first-child) {
             margin-left:12px
         }
@@ -132,7 +129,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" th:href="@{/main}">FK论坛</a>
+            <a class="navbar-brand" th:href="@{/}">FK论坛</a>
         </div>
         <div>
             <div th:if="${USER_NAME} ne null">
@@ -172,7 +169,7 @@
         </div>
     </div>
 </nav>
-<div class="mainContent" style="padding: 20px">
+<div class="mainContent" style="padding: 20px;margin-top: 60px">
     <div class="container" style="width: 90%;margin: 0 auto">
         <div class="row">
             <div class="col-md-9 footer-list text-center">
@@ -194,20 +191,38 @@
                     </div>
                     <footer class="kratos-entry-footer clearfix">
                         <div class="footer-tag clearfix">
-                            <div class="pull-left">
+                            <div class="pull-right">
                                 <i class="fa fa-tags"></i>
                                 <a rel="tag">楼主</a>
                             </div>
-                            <div class="pull-date">
-                                <span th:text="'发布于'+${theme.getTheme_time()}"></span>
+                        </div>
+                    </footer>
+                </article>
+                <article class="kratos-hentry clearfix" style="padding: 25px 10px 18px 10px;" th:each="reply:${replies}">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="/img/timg.jpg" class="avatar avatar-50 photo" height="50" width="50" style="border-radius: 50%">
+                            <h2 style="font-size: 16px;color: #333;margin-top: 10px" th:text="${reply.getUser_name()}"></h2>
+                            <h5><span class="glyphicon glyphicon-calendar" th:text="${reply.getReply_time()}"></span></h5>
+                        </div>
+                        <div class="col-md-10" align="left">
+                            <div class="row">
+                                <p th:text="${reply.getReply_content()}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="kratos-entry-footer clearfix">
+                        <div class="footer-tag clearfix">
+                            <div class="pull-right">
+                                <i class="fa fa-tags"></i>
+                                <a rel="tag" th:text="${reply.getFloor()}+'楼'"></a>
                             </div>
                         </div>
                     </footer>
                 </article>
                 <article class="kratos-hentry clearfix" style="padding: 10px 10px 18px 10px;">
-                    <form class="comment">
-                        <input type="hidden" name="theme_id">
-                        <input type="hidden" name="user_id">
+                    <form class="comment" th:action="@{commentinsert}" method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="theme_id" th:value="${theme.getTheme_id()}">
                         <div class="form-group">
                             <label for="comment" style="float: left;font-size: 20px;margin-bottom: 5px">发表回复 ：</label>
                             <textarea name="comment" id="comment" class="form-control" cols="30" rows="6" placeholder="内容......"></textarea>
@@ -241,7 +256,7 @@
                     </div>
                 </div>
                 <aside id="kratos_comments-4" class="widget widget_kratos_comments clearfix">
-                    <h4 class="widget-title">最近评论</h4>
+                    <h4 class="widget-title" align="left">最近评论</h4>
                     <div class="recentcomments">
                         <li class="comment-listitem" th:each="reply:${new5}">
                             <div class="comment-user">

@@ -22,7 +22,7 @@ public class Publish_controller {
     public String pulish(HttpServletRequest request, Model model){
         User user = (User)request.getSession().getAttribute("user");
         if(user==null){
-            return "redirect:main";
+            return "redirect:/main?page=1";
         }
         String role=user.getRole();
         System.out.println(role);
@@ -45,6 +45,6 @@ public class Publish_controller {
         User user = (User)request.getSession().getAttribute("user");
         Theme theme=new Theme(title,description,Time,user.getUser_id());
         themeService.insert(theme);
-        return "redirect:main";
+        return "redirect:/main?page=1";
     }
 }

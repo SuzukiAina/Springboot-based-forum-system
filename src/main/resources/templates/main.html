@@ -48,7 +48,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" th:href="@{/main}">FK论坛</a>
+            <a class="navbar-brand" th:href="@{/}">FK论坛</a>
         </div>
         <div id="help">
             <div th:if="${USER_NAME} ne null">
@@ -99,7 +99,7 @@
                             <tr>
                                 <td>                   </td>
                                 <td style="font-size: 20px;padding: 4px"><h4 th:text="${theme.getTheme_content()}" width="70%"></h4></td>
-                                <td style="padding: 4px"><h5 ><span class="glyphicon glyphicon-comment"><a th:text="${theme.getTheme_id()}" style="padding-left: 3px;cursor: pointer;color: rgba(29,29,29,0.6)"></a></span></h5></td>
+                                <td style="padding: 4px"><h5 ><span class="glyphicon glyphicon-comment"><a th:text="${theme.getNewRply_name()}" style="padding-left: 3px;cursor: pointer;color: rgba(29,29,29,0.6)"></a></span></h5></td>
                                 <td style="padding: 4px" width="12%"><h5><span class="glyphicon glyphicon-calendar"  th:text="${theme.getTheme_time()}"></span> </h5></td>
                             </tr>
                             </tbody>
@@ -141,7 +141,7 @@
                     </div>
                 </div>
                 <aside id="kratos_comments-4" class="widget widget_kratos_comments clearfix">
-                    <h4 class="widget-title">最近评论</h4>
+                    <h4 class="widget-title" align="left">最近评论</h4>
                     <div class="recentcomments">
                         <li class="comment-listitem" th:each="reply:${new5}">
                             <div class="comment-user">
