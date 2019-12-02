@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import rqchen.fkbbs.entity.Reply;
 import rqchen.fkbbs.entity.Theme;
 import rqchen.fkbbs.entity.User;
 import rqchen.fkbbs.service.ReplyService;
@@ -16,6 +17,7 @@ import rqchen.fkbbs.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,49 +42,6 @@ public class Main_controller {
         System.out.println(Time);
         return "hello";
     }
-
-    @GetMapping(value = "/main")
-    public String main(HttpServletRequest request,Model model){
-        List<Theme> themeList=themeService.themeList();
-        model.addAttribute("themes",themeList);
-        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-        for (Theme theme : themeList) {
-            Integer ID=Integer.parseInt(theme.getTheme_id());
-            Integer id=Integer.parseInt(theme.getUser_id());
-            theme.setUser_name(userService.getUserName(id));
-            theme.setReply_number(String.valueOf(replyService.getCount(ID)));
-            theme.setTheme_time(theme.getTheme_time().substring(0,10));
-        }
-        int count=themeService.getCount();
-        int page_number=(count/20)+1;
-        System.out.println(page_number);
-        int min_page,max_page;
-        if(page_number>4){
-            min_page=page_number-4;
-            max_page=page_number;
-        }else {
-            min_page=1;
-            max_page=page_number;
-        }
-        model.addAttribute("min_page",min_page);
-        model.addAttribute("max_page",max_page);
-
-        User user = (User)request.getSession().getAttribute("user");
-        if(user==null){
-            return "main";
-        }
-        String role=user.getRole();
-        System.out.println(role);
-        if(role.equals("1")){
-            System.out.println("是个管理员");
-            model.addAttribute("ROLE",1);
-        }else {
-            System.out.println("是个用户");
-            model.addAttribute("ROLE",0);
-        }
-        model.addAttribute("USER_NAME",user.getUser_name());
-        return "main";
-    }
     
     @RequestMapping(value = "/verifymail")
     @ResponseBody
@@ -103,5 +62,79 @@ public class Main_controller {
             e.printStackTrace();
         }
         return resultString;
+    }
+
+    @GetMapping(value = "/main")
+    public String main_page(@RequestParam(value ="page") int page,HttpServletRequest request,Model model){
+        //总主题帖数，分页器实现
+        int count=themeService.getCount();
+        int page_number=(count/20)+1;
+        int min_page,max_page;
+        if(page_number>4){
+            min_page=page_number-4;
+            max_page=page_number;
+        }else {
+            min_page=1;
+            max_page=page_number;
+        }
+        model.addAttribute("page_now",page);
+        model.addAttribute("page_number",page_number);
+        model.addAttribute("min_page",min_page);
+        model.addAttribute("max_page",max_page);
+
+        List<Theme> themeList=themeService.themeList();
+        int min_num=(page-1)*20;
+        int max_num;
+        if(count>(page*20)){
+            max_num=page*20;
+        }else {
+            max_num=count;
+        }
+        themeList=themeList.subList(min_num,max_num);
+        for (Theme theme : themeList) {
+            Integer ID=Integer.parseInt(theme.getTheme_id());//主题帖id
+            Integer id=Integer.parseInt(theme.getUser_id());//发帖人id
+            String time=theme.getTheme_time();
+            theme.setUser_name(userService.getUserName(id));//发帖人
+            theme.setReply_number(String.valueOf(replyService.getCount(ID)));//回帖数量
+            theme.setTheme_time(theme.getTheme_time().substring(5,10));//主题帖时间
+            //最新回复
+            Reply newReply=replyService.getNewReply(ID);
+            if(newReply!=null){
+                Integer newReply_user_id=Integer.parseInt(newReply.getUser_id());
+                theme.setNewRply_name(userService.getUserName(newReply_user_id));
+            }
+        }
+        model.addAttribute("themes",themeList);
+        //最近5条评论
+        List<Reply> replyList5=replyService.getNew5();
+        for(Reply reply:replyList5){
+            int user_id=Integer.parseInt(reply.getUser_id());
+            String date=reply.getReply_time().substring(5,10);
+            reply.setUser_name(userService.getUserName(user_id));
+            reply.setReply_time(date);
+        }
+        model.addAttribute("new5",replyList5);
+
+        User user = (User)request.getSession().getAttribute("user");
+        if(user==null){
+            return "main";
+        }
+        String role=user.getRole();
+        System.out.println(role);
+        if(role.equals("1")){
+            System.out.println("是个管理员");
+            model.addAttribute("ROLE",1);
+        }else {
+            System.out.println("是个用户");
+            model.addAttribute("ROLE",0);
+        }
+        model.addAttribute("USER_NAME",user.getUser_name());
+        return "main";
+    }
+
+    @GetMapping(value = "")
+    public String main_page(){
+        return "redirect:/main?page=1";
     }
 }

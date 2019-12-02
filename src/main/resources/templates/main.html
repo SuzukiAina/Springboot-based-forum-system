@@ -55,13 +55,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <!--/*@thymesVar id="USER_NAME" type=""*/-->
-                            <div th:if="${ROLE} eq 1">
-                                <span class="glyphicon glyphicon-user" th:text="' hi! 管理员'+${USER_NAME}"/><span class="caret"></span>
-                            </div>
-                            <div th:if="${ROLE} eq 0">
-                                <span class="glyphicon glyphicon-user" th:text="' hi! 用户'+${USER_NAME}"/><span class="caret"></span>
-                            </div>
+                            <span>我的论坛</span><span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="#"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
@@ -77,20 +71,6 @@
                     </li>
                 </ul>
             </div>
-            <div th:if="${USER_NAME} eq null">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a th:href="@{/login}">
-                            <span class="glyphicon glyphicon-log-in"> 登录</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{/reg}">
-                            <span class="glyphicon glyphicon-send"> 注册</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 </nav>
@@ -102,39 +82,84 @@
         </div>
     </div>
 </div>
-<div class="mainContent" style="padding: 20px">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1 footer-list text-center">
-            <article class="kratos-hentry clearfix" th:each="theme:${themes}" style="margin-top: 0px">
-            <div class="kratos-entry-border-new clearfix" align="left">
-                <table class="table" style="margin: 0 auto">
-                    <tbody>
-                    <tr>
-                        <td width="10%"><span class="glyphicon glyphicon-calendar" th:text="${theme.getReply_number()}+'人回复'" style="margin-left: 12px;font-size: 10px;padding: 4px"></span></td>
-                        <td width="70%" style="font-size: 20px;padding: 4px"><h4><a th:text="${theme.getTheme_title()}" th:href="@{/theme(id=${theme.getTheme_id()})}"></a></h4></td>
-                        <td style="padding: 4px" width="12%"><h5><span class="glyphicon glyphicon-user"><a th:text="${theme.getUser_name()}" style="padding-left: 3px;cursor: pointer;"></a></span></h5></td>
-                        <td>    </td>
-                    </tr>
-                    <tr>
-                        <td>                   </td>
-                        <td style="font-size: 20px;padding: 4px"><h4 th:text="${theme.getTheme_content()}" width="70%"></h4></td>
-                        <td style="padding: 4px"><h5><span class="glyphicon glyphicon-comment"><a th:text="${theme.getUser_name()}" style="padding-left: 3px;cursor: pointer;"></a></span></h5></td>
-                        <td style="padding: 4px" width="12%"><h5 th:text="'发布于'+${theme.getTheme_time()}"></h5></td>
-                    </tr>
-                    </tbody>
-                </table>
+<div class="mainContent" style="padding: 20px;margin: 0 auto">
+    <div class="container" style="width: 90%;margin: 0 auto">
+        <div class="row">
+            <div class="col-md-9 footer-list text-center">
+                <article class="kratos-hentry clearfix" th:each="theme:${themes}" style="margin-top: 0px">
+                    <div class="kratos-entry-border-new clearfix" align="left">
+                        <table class="table" style="margin: 0 auto">
+                            <tbody>
+                            <tr>
+                                <td width="10%"><span class="glyphicon glyphicon-comment" th:text="${theme.getReply_number()}+'人回复'" style="margin-left: 12px;font-size: 10px;padding: 4px"></span></td>
+                                <td width="70%" style="font-size: 20px;padding: 4px"><h4><a th:text="${theme.getTheme_title()}" th:href="@{/theme(id=${theme.getTheme_id()})}"></a></h4></td>
+                                <td style="padding: 4px" width="12%"><h5><span class="glyphicon glyphicon-user"><a th:text="${theme.getUser_name()}" style="padding-left: 3px;cursor: pointer;color: rgba(29,29,29,0.6)"></a></span></h5></td>
+                                <td>    </td>
+                            </tr>
+                            <tr>
+                                <td>                   </td>
+                                <td style="font-size: 20px;padding: 4px"><h4 th:text="${theme.getTheme_content()}" width="70%"></h4></td>
+                                <td style="padding: 4px"><h5 ><span class="glyphicon glyphicon-comment"><a th:text="${theme.getTheme_id()}" style="padding-left: 3px;cursor: pointer;color: rgba(29,29,29,0.6)"></a></span></h5></td>
+                                <td style="padding: 4px" width="12%"><h5><span class="glyphicon glyphicon-calendar"  th:text="${theme.getTheme_time()}"></span> </h5></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+                <div class="text-center" id="page-footer">
+                    <ul class="pagination">
+                        <li th:if="${page_number} ge ${min_page}" class=""th:classappend="${page_now==min_page} ? 'active' : '' "><a th:href="@{/main(page=${min_page})}" th:text="${min_page}"></a></li>
+                        <li th:if="${page_number} ge ${min_page}+1" class=""th:classappend="${page_now==(min_page+1)} ? 'active' : '' "><a th:href="@{/main(page=${min_page+1})}" th:text="${min_page+1}"></a></li>
+                        <li th:if="${page_number} ge ${min_page}+2" class=""th:classappend="${page_now==(min_page+2)} ? 'active' : '' "><a th:href="@{/main(page=${min_page+2})}" th:text="${min_page+2}"></a></li>
+                        <li th:if="${page_number} ge ${min_page}+3" class=""th:classappend="${page_now==(min_page+3)} ? 'active' : '' "><a th:href="@{/main(page=${min_page+3})}" th:text="${min_page+3}"></a></li>
+                        <li th:if="${page_number} ge ${min_page}+4" class=""th:classappend="${page_now==(min_page+4)} ? 'active' : '' "><a th:href="@{/main(page=${min_page+4})}" th:text="${min_page+4}"></a></li>
+                        <li ><a class="next" title="下一页" th:href="@{/main(page=${page_now+1})}">&gt;</a></li>
+                        <li><a class="extend" title="尾页" th:href="@{/main(page=${max_page})}">»</a></li>
+                    </ul>
+                </div>
             </div>
-            </article>
+            <div class="col-md-3 text-center" style="margin: 0 auto">
+                <div th:if="${USER_NAME} ne null">
+                    <div th:if="${ROLE} eq 1">
+                        <div class="xh-widget-title" th:text="'管理员 '+${USER_NAME}+' 您好！'"></div>
+                    </div>
+                    <div th:if="${ROLE} eq 0">
+                        <div class="xh-widget-title" th:text="'用户'+${USER_NAME}+'您好！'"></div>
+                    </div>
+                    <div class="xh-wechat-social-widget" style="padding-top: 15px;padding-bottom: 15px">
+                        <a class="btn btn-default" style="margin: 7px">个人中心</a>
+                        <a class="btn btn-default" th:href="@{/logout}" style="margin: 7px">退出登录</a>
+                    </div>
+                </div>
+                <div th:if="${USER_NAME} eq null">
+                    <div>
+                        <div class="xh-widget-title">用户您好，请您先登录</div>
+                    </div>
+                    <div class="xh-wechat-social-widget" style="padding-top: 15px;padding-bottom: 15px">
+                        <a class="btn btn-default" style="margin: 7px;margin-bottom: 0;margin-top: 0" th:href="@{/login}">登录</a>
+                        <a class="btn btn-default" style="margin: 7px;margin-bottom: 0;margin-top: 0" th:href="@{/reg}">注册</a>
+                    </div>
+                </div>
+                <aside id="kratos_comments-4" class="widget widget_kratos_comments clearfix">
+                    <h4 class="widget-title">最近评论</h4>
+                    <div class="recentcomments">
+                        <li class="comment-listitem" th:each="reply:${new5}">
+                            <div class="comment-user">
+                                <span class="comment-avatar"><img src="/img/timg.jpg" class="avatar avatar-50 photo" height="50" width="50"></span>
+                                <div class="comment-author" th:text="${reply.getUser_name()}"></div>
+                                <span class="comment-date" th:text="${reply.getReply_time()}"></span>
+                            </div>
+                            <div class="comment-content-link">
+                                <a th:href="@{/theme(id=${reply.getTheme_id()})}">
+                                    <div class="comment-content" th:text="${reply.getReply_content()}" align="left"></div>
+                                </a>
+                            </div>
+                        </li>
+                    </div>
+                </aside>
+            </div>
         </div>
     </div>
-</div>
-<div class="text-center" id="page-footer">
-    <ul class="pagination">
-        <li class="active"><a href="http://47.106.251.237/">1</a></li>
-        <li><a href="http://47.106.251.237/?paged=2">2</a></li>
-        <li><a href="http://47.106.251.237/?paged=2" class="next" title="下一页">&gt;</a></li>
-        <li><a href="http://47.106.251.237/?paged=2" class="extend" title="尾页">»</a></li>
-    </ul>
 </div>
 <script type="text/javascript" zIndex='-1' opacity='1' count='99' src="canvas/canvas-nest.js"></script>
 </body>

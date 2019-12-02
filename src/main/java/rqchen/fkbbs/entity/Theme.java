@@ -1,5 +1,7 @@
 package rqchen.fkbbs.entity;
 
+import java.util.List;
+
 public class Theme {
     String Theme_id;
     String Theme_title;
@@ -8,6 +10,33 @@ public class Theme {
     String User_id;
     String User_name;
     String Reply_number;
+    String NewRply_name;
+    List<Reply> replyList;
+    Reply NewReply;
+
+    public String getNewRply_name() {
+        return NewRply_name;
+    }
+
+    public void setNewRply_name(String newRply_name) {
+        NewRply_name = newRply_name;
+    }
+
+    public Reply getNewReply() {
+        return NewReply;
+    }
+
+    public void setNewReply(Reply newReply) {
+        NewReply = newReply;
+    }
+
+    public List<Reply> getReplyList() {
+        return replyList;
+    }
+
+    public void setReplyList(List<Reply> replyList) {
+        this.replyList = replyList;
+    }
 
     public String getUser_name() {
         return User_name;

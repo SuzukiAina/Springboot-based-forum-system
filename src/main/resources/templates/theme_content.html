@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/x-icon" href="icon/fkbbs.ico";>
+    <link rel="icon" type="image/x-icon" href="icon/fkbbs.ico" ;>
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <!--
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -21,22 +21,96 @@
 
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.common.dev.js"></script>
 
-    <link rel='stylesheet' id='kratos-css' href='kratos/kratos.css' type='text/css' media='all' />
-    <title>图书管理系统</title>
+    <title th:text="${theme.getTheme_title()}"></title>
     <style>
         html, body {
             height: 1500px;
             width: 100%;
         }
-        .row{
+        .row {
             margin-top: 50px;
+        }
+        .kratos-hentry.kratos-post-inner .kratos-post-meta .fa-thumbs-o-up,.kratos-post-meta i:not(:first-child) {
+            margin-left:12px
+        }
+        .kratos-hentry{margin-bottom:15px;background-color:#fff;box-shadow:0 2px 4px rgba(0,0,0,.1);border-radius:0;-webkit-transition:all .6s ease;transition:all .6s ease}
+        .container article.kratos-hentry:hover{box-shadow:0 8px 15px rgba(146,146,146,.39)}
+        .kratos-post-inner.kratos-hentry{padding:25px 10px 18px 10px}
+        .kratos-entry-header .kratos-post-meta a{font-size:13px;margin-right:10px;margin-bottom:20px;color:#777676}
+        .kratos-entry-header{margin-bottom:15px}
+        .kratos-entry-footer{color:#9d9d9d;margin:10px}
+        .kratos-entry-footer .footer-tag a{background-color:#aaa;border-radius:0;color:#fff;display:inline-block;font-size:12px;line-height:13px;margin:0 0 2px 5px;padding:3px 7px;position:relative}
+        .kratos-entry-footer .footer-tag a:focus,.kratos-entry-footer .footer-tag a:hover{background:#8d8d8d;color:#fff!important}
+        .kratos-entry-footer .footer-tag .pull-date{float:right;margin-top:5px;font-size:14px}
+        .widget{margin:0 0 15px;padding:20px 25px;background-color:#fff;box-shadow:0 2px 4px rgba(0,0,0,.1);border-radius:0}
+        .widget-title{position:relative;margin:0 0 10px;padding-bottom:12px;border-bottom:1px solid #e7e7e7;font-size:16px}
+        .widget-title::after{position:absolute;left:0;bottom:0;height:2.5px!important;width:73px;background-color:#51aded;content:''}
+        .widget img{max-width:100%;height:auto}
+        .widget a{color:#4c4c4c;text-decoration:none;-webkit-transition:color .3s;transition:color .3s}
+        .widget a:hover{color:#618eba}.widget li{padding-top:2px;padding-bottom:2px}
+        .widget .children{padding-left:30px}
+        .widget_kratos_about{padding:0!important}
+        .widget_kratos_about p{margin-bottom:1em;font-size:16px;margin:0}
+        .widget_kratos_about .photo-wrapper{width:100%}
+        .widget_kratos_about .photo-wrapper img{margin:-50px 0 0;width:90px;height:90px;border:rgba(255,255,255,.4) 4px solid;border-radius:50%}
+        .widget_kratos_about .photo-background{height:120px}
+        .widget_kratos_about .textwidget{margin:10px 0 30px}
+        .widget_kratos_ad{padding:5px}
+        .widget_kratos_ad .img-responsive{display:block;max-width:100%;height:auto}
+        .widget_kratos_ad h4{margin:10px 20px 5px}
+        .widget_kratos_ad img{max-width:100%;height:auto}
+        .widget_kratos_tags .widget-title::after{height:2px!important}
+        .widget_kratos_tags .tag_clouds a{display:inline-block;margin:3px 4px;padding:4px 12px;border:1px solid #f0f0f0;color:#666;text-transform:uppercase;line-height:19px;background:rgba(251,251,251,.7)}
+        .widget_kratos_poststab{padding:7px 30px 15px 30px}
+        .widget_kratos_poststab .nav{padding-left:0;margin-bottom:0;list-style:none}
+        .widget_kratos_poststab .nav-tabs>li{float:left}
+        .widget_kratos_poststab .nav-tabs>li>span{position:relative;display:block;padding:10px 15px;line-height:1.42857143;border:1px solid transparent}
+        .widget_kratos_poststab .nav-tabs>li>span:focus,.nav-tabs>li>a:hover,a.list-group-item:focus,a.list-group-item:hover,button.list-group-item:focus,button.list-group-item:hover{color:#000!important}
+        .widget_kratos_poststab .nav-tabs.nav-justified>li>span{margin-right:0;border-bottom:0;border-radius:0}
+        .widget_kratos_poststab .nav-tabs.nav-justified>.active>span,.nav-tabs.nav-justified>.active>span:focus,.nav-tabs.nav-justified>.active>span:hover{border:0}
+        .widget_kratos_poststab #tabul li{border-bottom:3px solid #f2f2f2;list-style:none;width:33%;text-align:center;font-size:16px;cursor:url(../images/pointer.cur),auto}
+        .widget_kratos_poststab #tabul .active{position:relative;border-bottom:3px solid #51aded;color:#000}
+        .widget_kratos_poststab .tab-content{margin:0 8px -18px 8px}
+        .widget_kratos_poststab .tab-content>.tab-pane{display:none}
+        .widget_kratos_poststab .tab-content>.active{display:block}
+        .widget_kratos_poststab .list-group{padding-left:0;margin-bottom:20px}
+        .widget_kratos_poststab .tab-content .list-group a:last-child,.widget_kratos_poststab .tab-content .list-group a:nth-last-child(2){border-bottom:0}
+        .widget_kratos_poststab .tab-content .list-group a{overflow:hidden;border-bottom:1px dashed #b4afaf;color:#666;text-decoration:none;text-overflow:ellipsis;white-space:nowrap;-webkit-transition:color .3s;transition:color .3s}
+        .widget_kratos_poststab .list-group-item{position:relative;display:block;margin-bottom:0;padding:8px 0;border:0}
+        .widget_kratos_poststab .list-group-item:first-child{margin-top:1px}
+        .widget_kratos_poststab .list-group-item i{margin:0 5px 0 0}
+        .widget_kratos_comments .recentcomments{padding:0 5px}
+        .widget_kratos_comments .comment-listitem{list-style:none;padding:8px 0!important}
+        .widget_kratos_comments .comment-user{font-size:13px}
+        .widget_kratos_comments .comment-avatar{float:left}
+        .widget_kratos_comments .comment-avatar img{float:left;margin-right:8px;width:50px;height:50px;border-radius:50%;-webkit-box-shadow:0 .125rem 1.0625rem 0 rgba(0,0,0,.1);box-shadow:0 .125rem 1.0625rem 0 rgba(0,0,0,.1)}
+        .widget_kratos_comments .comment-author{float:left;margin-right:10px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;max-width:95px}
+        .widget_kratos_comments .comment-content{font-size:14px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;width:75%}
+        .widget_kratos_comments .wp-smiley{max-height:20px !important}
+        .widget_archive li::before,.widget_categories li::before{font-family:fontawesome;font-size:15px}
+        .widget_archive ul,.widget_categories ul{list-style:none;padding:0;margin:0}
+        .widget_archive li::before{content:'\f133';margin-right:8px}
+        .widget_categories li::before{content:'\f114';margin-right:8px}
+        .widget_links ul{padding:0 8px;margin-bottom:5px}
+        .widget_links li{list-style:none;width:50%;float:left}
+        .widget_links img{width:25px;height:25px;margin-top:-3px;border-radius:50%}
+        @media(max-width:1200px){
+            .kratos-entry-content-new{height:80px;overflow:hidden;text-overflow:ellipsis}
+            .widget{padding:15px}
+            .widget_kratos_about .photo-background{height:100px}
+            .widget_kratos_about .textwidget{margin:0 0 20px 0}
+            .widget_kratos_ad{padding:3px}
+            .widget_kratos_comments .comment-author{max-width:180px}
+            .widget_kratos_comments .comment-date{display:none}
+            .widget_kratos_poststab .nav-tabs>li>span{padding:4px 15px}
+            .widget_kratos_poststab .list-group-item{padding:6px 0}
         }
     </style>
 </head>
 <body>
 <script type="text/javascript">
     $(function () {
-        $('.DLmodal').bootstrapValidator({
+        $('.comment').bootstrapValidator({
             message: 'This value is not valid',
             feedbackIcons: {
                 valid: "glyphicon glyphicon-ok",//验证成功图标
@@ -44,33 +118,13 @@
                 validating: 'glyphicon glyphicon-refresh'//验证中图标
             },
             fields: {
-                email_login: {
+                comment: {
                     validators: {
                         notEmpty: {
-                            message: '邮箱地址不能为空'
-                        },
-                        emailAddress: {
-                            message: '邮箱地址格式有误'
+                            message: '评论不能为空'
                         },
                     }
                 },
-                password: {
-                    validators: {
-                        notEmpty: {
-                            message: '密码不能为空'
-                        },
-                    }
-                },
-                email: {
-                    validators: {
-                        notEmpty: {
-                            message: '邮箱不能为空'
-                        },
-                        emailAddress: {
-                            message: '邮箱地址格式有误'
-                        }
-                    }
-                }
             }
         });
     });
@@ -85,12 +139,13 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <!--/*@thymesVar id="USER_NAME" type=""*/-->
-                            <span class="glyphicon glyphicon-user" th:text="' hi! '+${USER_NAME}"/><span class="caret"></span>
+                            <span>我的论坛</span><span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="#"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-tags"> 发布新帖</span></a></a></li>
+                            <li><a th:href="@{/publish}"><span class="glyphicon glyphicon-tags"> 发布新帖</span></a></a></li>
+                            <li th:if="${ROLE} eq 1"><a href="#"><span class="glyphicon glyphicon-wrench"> 管理用户</span></a></li>
+                            <li th:if="${ROLE} eq 1"><a href="#"><span class="glyphicon glyphicon-th-list"> 管理帖子</span></a></li>
                         </ul>
                     </li>
                     <li>
@@ -118,34 +173,91 @@
     </div>
 </nav>
 <div class="mainContent" style="padding: 20px">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1 footer-list text-center">
-            <article class="kratos-hentry clearfix" style="padding: 25px 10px 18px 10px;">
-                <div class="kratos-entry-border-new clearfix" align="left">
-                    <header class="kratos-entry-header">
-                        <h1 class="kratos-entry-title text-center" th:text="${theme.getTheme_title()}"></h1>
-                        <div class="kratos-post-meta text-center">
+    <div class="container" style="width: 90%;margin: 0 auto">
+        <div class="row">
+            <div class="col-md-9 footer-list text-center">
+                <article class="kratos-hentry clearfix" style="padding: 25px 10px 18px 10px;">
+                    <div class="kratos-entry-border-new clearfix" align="left">
+                        <header class="kratos-entry-header">
+                            <h1 class="kratos-entry-title text-center" th:text="${theme.getTheme_title()}"></h1>
+                            <div class="kratos-post-meta text-center">
                             <span>
                                 <span class="glyphicon glyphicon-calendar" th:text="${theme.getTheme_time()}"></span>
-                                <span class="glyphicon glyphicon-calendar" th:text="${theme.getReply_number()}+'人回复'" style="margin-left: 12px;"></span>
-                                <span class="glyphicon glyphicon-user" th:text="${theme.getUser_name()}" style="margin-left: 12px;"></span>
+                                <span class="glyphicon glyphicon-calendar" th:text="${theme.getReply_number()}+'人回复'"
+                                      style="margin-left: 12px;"></span>
+                                <span class="glyphicon glyphicon-user" th:text="${theme.getUser_name()}"
+                                      style="margin-left: 12px;"></span>
                             </span>
-                        </div>
-                    </header>
-                    <p th:text="${theme.getTheme_content()}" style="margin: 10px"></p>
-                </div>
-                <footer class="kratos-entry-footer clearfix">
-                    <div class="footer-tag clearfix">
-                        <div class="pull-left">
-                            <i class="fa fa-tags"></i>
-                            <a rel="tag">楼主</a>
-                        </div>
-                        <div class="pull-date">
-                            <span th:text="'发布于'+${theme.getTheme_time()}"></span>
-                        </div>
+                            </div>
+                        </header>
+                        <p th:text="${theme.getTheme_content()}" style="margin: 10px"></p>
                     </div>
-                </footer>
-            </article>
+                    <footer class="kratos-entry-footer clearfix">
+                        <div class="footer-tag clearfix">
+                            <div class="pull-left">
+                                <i class="fa fa-tags"></i>
+                                <a rel="tag">楼主</a>
+                            </div>
+                            <div class="pull-date">
+                                <span th:text="'发布于'+${theme.getTheme_time()}"></span>
+                            </div>
+                        </div>
+                    </footer>
+                </article>
+                <article class="kratos-hentry clearfix" style="padding: 10px 10px 18px 10px;">
+                    <form class="comment">
+                        <input type="hidden" name="theme_id">
+                        <input type="hidden" name="user_id">
+                        <div class="form-group">
+                            <label for="comment" style="float: left;font-size: 20px;margin-bottom: 5px">发表回复 ：</label>
+                            <textarea name="comment" id="comment" class="form-control" cols="30" rows="6" placeholder="内容......"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary form-control" style="margin-top: 15px">发表回复</button>
+                        </div>
+                    </form>
+                </article>
+            </div>
+            <div class="col-md-3 text-center" style="margin: 0 auto">
+                <div th:if="${USER_NAME} ne null">
+                    <div th:if="${ROLE} eq 1">
+                        <div class="xh-widget-title" th:text="'管理员 '+${USER_NAME}+' 您好！'"></div>
+                    </div>
+                    <div th:if="${ROLE} eq 0">
+                        <div class="xh-widget-title" th:text="'用户'+${USER_NAME}+'您好！'"></div>
+                    </div>
+                    <div class="xh-wechat-social-widget" style="padding-top: 15px;padding-bottom: 15px">
+                        <a class="btn btn-default" style="margin: 7px">个人中心</a>
+                        <a class="btn btn-default" th:href="@{/logout}" style="margin: 7px">退出登录</a>
+                    </div>
+                </div>
+                <div th:if="${USER_NAME} eq null">
+                    <div>
+                        <div class="xh-widget-title">用户您好，请您先登录</div>
+                    </div>
+                    <div class="xh-wechat-social-widget" style="padding-top: 15px;padding-bottom: 15px">
+                        <a class="btn btn-default" style="margin: 7px;margin-bottom: 0;margin-top: 0" th:href="@{/login}">登录</a>
+                        <a class="btn btn-default" style="margin: 7px;margin-bottom: 0;margin-top: 0" th:href="@{/reg}">注册</a>
+                    </div>
+                </div>
+                <aside id="kratos_comments-4" class="widget widget_kratos_comments clearfix">
+                    <h4 class="widget-title">最近评论</h4>
+                    <div class="recentcomments">
+                        <li class="comment-listitem" th:each="reply:${new5}">
+                            <div class="comment-user">
+                                <span class="comment-avatar"><img src="/img/timg.jpg" class="avatar avatar-50 photo" height="50" width="50"></span>
+                                <div class="comment-author" th:text="${reply.getUser_name()}"></div>
+                                <span class="comment-date" th:text="${reply.getReply_time()}"></span>
+                            </div>
+                            <div class="comment-content-link">
+                                <a th:href="@{/theme(id=${reply.getTheme_id()})}">
+                                    <div class="comment-content" th:text="${reply.getReply_content()}" align="left"></div>
+                                </a>
+                            </div>
+                        </li>
+                    </div>
+                </aside>
+            </div>
         </div>
     </div>
 </div>

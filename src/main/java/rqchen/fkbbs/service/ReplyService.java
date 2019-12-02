@@ -33,4 +33,12 @@ public class ReplyService {
     }
 
     public int getCount(Integer theme_id){return replyMapper.getReplyCount(theme_id);}
+
+    public List<Reply> getReply(Integer Theme_id){return replyMapper.getReplybyTheme(Theme_id);}
+
+    public Reply getNewReply(Integer Theme_id){return replyMapper.getNewReply(Theme_id);}
+
+    public List<Reply> getReplyasc(Integer Theme_id){return replyMapper.getReplybyThemeasc(Theme_id);}
+
+    public List<Reply> getNew5(){return replyMapper.getNew5Reply();}
 }

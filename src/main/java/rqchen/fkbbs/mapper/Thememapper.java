@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface Thememapper {
-    @Select("select * from THEME")
+    @Select("select * from THEME order by LAST_REPLY desc")
     public List<Theme> getAllTheme();
 
     @Select("select * from THEME where THEME_ID=#{id}")
@@ -19,7 +19,7 @@ public interface Thememapper {
     @Update("update THEME set THEME_TITLE=#{Theme_title},THEME_CONTENT=#{Theme_content} where THEME_ID=#{Theme_id}")
     public int UpdateTheme(Theme theme);
 
-    @Insert("insert into THEME(THEME_ID,USER_ID,THEME_TITLE,THEME_CONTENT,THEME_TIME) values (NULL,#{User_id},#{Theme_title},#{Theme_content},#{Theme_time})")
+    @Insert("insert into THEME(THEME_ID,USER_ID,THEME_TITLE,THEME_CONTENT,THEME_TIME,LAST_REPLY) values (NULL,#{User_id},#{Theme_title},#{Theme_content},#{Theme_time},NULL)")
     public int InsertTheme(Theme theme);
 
     @Select("select count(THEME_ID) from THEME")

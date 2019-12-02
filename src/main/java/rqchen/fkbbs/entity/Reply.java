@@ -6,6 +6,15 @@ public class Reply {
     String Reply_content;
     String Reply_time;
     String User_id;
+    String User_name;
+
+    public String getUser_name() {
+        return User_name;
+    }
+
+    public void setUser_name(String user_name) {
+        User_name = user_name;
+    }
 
     public String getReply_id() {
         return Reply_id;

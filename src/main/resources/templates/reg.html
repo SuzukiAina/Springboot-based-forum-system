@@ -131,6 +131,16 @@
                         },
                     }
                 },
+                img: {
+                    validators: {
+                        file: {
+                            message: '不是合法的日期',
+                        },
+                        notEmpty: {
+                            message: '不能为空',
+                        },
+                    }
+                },
             }
         });
     });
@@ -177,6 +187,11 @@
                     <label style="margin-left: 5px">
                         <input type="radio" name="radio" id="gender_w" value=0>女
                     </label>
+                </div>
+                <div class="form-group">
+                    <label for="inputfile">头像</label>
+                    <input type="file" id="inputfile" name="img">
+                    <p class="help-block">图片不得大于10mb</p>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary form-control">注册</button>

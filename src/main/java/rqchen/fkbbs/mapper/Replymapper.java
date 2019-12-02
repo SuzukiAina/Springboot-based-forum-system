@@ -24,4 +24,16 @@ public interface Replymapper {
 
     @Select("select count(REPLY_ID) from REPLY where THEME_ID=#{theme_id}")
     public int getReplyCount(Integer theme_id);
+
+    @Select("select * from REPLY where THEME_ID=#{Theme_id}")
+    public List<Reply> getReplybyTheme(int Theme_id);
+
+    @Select("select * from REPLY where THEME_ID=#{Theme_id} order by REPLY_TIME desc limit 1")
+    public Reply getNewReply(int Theme_id);
+
+    @Select("select * from REPLY where THEME_ID=#{Theme_id} order by REPLY_TIME asc")
+    public List<Reply> getReplybyThemeasc(int Theme_id);
+
+    @Select("select * from REPLY order by REPLY_TIME desc limit 5")
+    public List<Reply> getNew5Reply();
 }
