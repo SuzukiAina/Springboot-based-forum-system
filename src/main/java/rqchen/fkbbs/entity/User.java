@@ -1,5 +1,7 @@
 package rqchen.fkbbs.entity;
 
+import java.sql.Date;
+
 public class User {
     String User_id;
     String User_mail;
@@ -8,6 +10,29 @@ public class User {
     String User_birth;
     String Role;
     String User_password;
+    String Img_url;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "User_id='" + User_id + '\'' +
+                ", User_mail='" + User_mail + '\'' +
+                ", User_name='" + User_name + '\'' +
+                ", User_sex='" + User_sex + '\'' +
+                ", User_birth='" + User_birth + '\'' +
+                ", Role='" + Role + '\'' +
+                ", User_password='" + User_password + '\'' +
+                ", Img_url='" + Img_url + '\'' +
+                '}';
+    }
+
+    public String getImg_url() {
+        return Img_url;
+    }
+
+    public void setImg_url(String img_url) {
+        Img_url = img_url;
+    }
 
     public User(String email_reg, String nickname, String sex, String birth, String i, String password) {
         User_mail=email_reg;
@@ -17,6 +42,27 @@ public class User {
         User_sex=i;
         User_password=password;
         Role="0";
+    }
+
+    public User(String user_mail, String user_name, String user_sex, String user_birth, String role, String user_password, String img_url) {
+        User_mail = user_mail;
+        User_name = user_name;
+        User_sex = user_sex;
+        User_birth = user_birth;
+        Role = role;
+        User_password = user_password;
+        Img_url = img_url;
+    }
+
+    public User(int user_id, String user_mail, String user_name, int user_sex, Date user_birth, int role, String user_password, String img_url) {
+        User_id = String.valueOf(user_id);
+        User_mail = user_mail;
+        User_name = user_name;
+        User_sex = String.valueOf(user_sex);
+        User_birth = String.valueOf(user_birth);
+        Role = String.valueOf(role);
+        User_password = user_password;
+        Img_url = img_url;
     }
 
     public String getUser_id() {
@@ -75,16 +121,4 @@ public class User {
         User_password = user_password;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "User_id='" + User_id + '\'' +
-                ", User_mail='" + User_mail + '\'' +
-                ", User_name='" + User_name + '\'' +
-                ", User_sex='" + User_sex + '\'' +
-                ", User_birth='" + User_birth + '\'' +
-                ", Role='" + Role + '\'' +
-                ", User_password='" + User_password + '\'' +
-                '}';
-    }
 }

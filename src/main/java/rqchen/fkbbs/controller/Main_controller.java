@@ -120,6 +120,7 @@ public class Main_controller {
         if(user==null){
             return "main";
         }
+        System.out.println(user.toString());
         String role=user.getRole();
         System.out.println(role);
         if(role.equals("1")){
@@ -130,6 +131,7 @@ public class Main_controller {
             model.addAttribute("ROLE",0);
         }
         model.addAttribute("USER_NAME",user.getUser_name());
+        model.addAttribute("img_url",user.getImg_url());
         return "main";
     }
 

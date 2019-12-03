@@ -105,7 +105,6 @@
                             url:'/verifymail',
                             data:'',
                             message:'邮箱已被注册',
-                            delay:2000,
                             type:'POST'
                         }
                     }
@@ -134,11 +133,10 @@
                 img: {
                     validators: {
                         file: {
-                            message: '不是合法的日期',
-                        },
-                        notEmpty: {
-                            message: '不能为空',
-                        },
+                            extension: 'png,jpg,jpeg',
+                            type: 'image/png,image/jpg,image/jpeg',
+                            message: '请重新选择图片'
+                        }
                     }
                 },
             }
@@ -157,7 +155,7 @@
         <div class="modal-header">
             <h2 class="modal-title text-center" id="ZCModalLabel">注册</h2>
         </div>
-        <form class="ZCmodal" th:action="@{regsave}" th:method="post">
+        <form enctype="multipart/form-data" class="ZCmodal" th:action="@{regsave}" method="post">
             <div class="modal-body" id = "ZC-body">
                 <div class="form-group">
                     <label class="control-label">邮箱地址</label>
@@ -189,12 +187,11 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <label for="inputfile">头像</label>
-                    <input type="file" id="inputfile" name="img">
-                    <p class="help-block">图片不得大于10mb</p>
+                    <label class="control-label">头像</label>
+                    <input type="file" name="img"/>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary form-control">注册</button>
+                    <input type="submit" class="btn btn-primary form-control" value="注册"></input>
                 </div>
             </div>
         </form>

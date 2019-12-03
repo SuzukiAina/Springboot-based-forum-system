@@ -120,6 +120,9 @@
             </div>
             <div class="col-md-3 text-center" style="margin: 0 auto">
                 <div th:if="${USER_NAME} ne null">
+                    <div align="center" class="xh-wechat-social-widget">
+                        <a title="SuzukiAina"><img th:src="${img_url}" class="avatar avatar-35 photo" height="35" width="35"></a>
+                    </div>
                     <div th:if="${ROLE} eq 1">
                         <div class="xh-widget-title" th:text="'管理员 '+${USER_NAME}+' 您好！'"></div>
                     </div>

@@ -24,6 +24,10 @@ public interface Usermapper {
             "values (NULL,#{User_mail},#{User_name},#{User_sex},#{User_birth},#{Role},#{User_password})")
     public int InsertUser(User user);
 
+    @Insert("insert into USER(USER_ID,USER_MAIL,USER_NAME,USER_SEX,USER_BIRTH,ROLE,USER_PASSWORD,IMG_URL) " +
+            "values (NULL,#{User_mail},#{User_name},#{User_sex},#{User_birth},#{Role},#{User_password},#{Img_url})")
+    public int InsertUserImg(User user);
+
     @Select("select USER_PASSWORD from USER where USER_MAIL=#{mail}")
     public String getUserByInfo(String mail);
 

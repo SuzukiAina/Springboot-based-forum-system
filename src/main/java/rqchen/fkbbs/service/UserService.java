@@ -18,6 +18,10 @@ public class UserService {
         return usermapper.InsertUser(user);
     }
 
+    public int insertImg(User user){
+        return usermapper.InsertUserImg(user);
+    }
+
     public int delete(Integer id){
         return usermapper.delUserById(id);
     }

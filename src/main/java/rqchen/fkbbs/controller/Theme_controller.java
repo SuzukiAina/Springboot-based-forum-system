@@ -1,11 +1,14 @@
 package rqchen.fkbbs.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import rqchen.fkbbs.entity.Reply;
 import rqchen.fkbbs.entity.Theme;
 import rqchen.fkbbs.entity.User;
@@ -17,7 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class Theme_controller {
@@ -84,5 +89,25 @@ public class Theme_controller {
         Reply reply=new Reply(theme_id,comment,Time,user.getUser_id());
         replyService.insert(reply);
         return "redirect:/main?page=1";
+    }
+
+    @RequestMapping(value = "/verifylogin")
+    @ResponseBody
+    public String verifymail(HttpServletRequest request){
+        User user = (User)request.getSession().getAttribute("user");
+        boolean result=true;
+        if(user==null){
+            result=false;
+        }
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("valid", result);
+        ObjectMapper mapper = new ObjectMapper();
+        String resultString = "";
+        try {
+            resultString = mapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return resultString;
     }
 }
