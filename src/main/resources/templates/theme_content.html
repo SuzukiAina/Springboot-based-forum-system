@@ -19,8 +19,6 @@
     <link href="https://cdn.bootcss.com/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.zh-CN.min.js"></script>
 
-    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.common.dev.js"></script>
-
     <title th:text="${theme.getTheme_title()}"></title>
     <style>
         html, body {
@@ -139,10 +137,8 @@
                             <span>我的论坛</span><span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
+                            <li><a th:href="@{/info}"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
                             <li><a th:href="@{/publish}"><span class="glyphicon glyphicon-tags"> 发布新帖</span></a></a></li>
-                            <li th:if="${ROLE} eq 1"><a href="#"><span class="glyphicon glyphicon-wrench"> 管理用户</span></a></li>
-                            <li th:if="${ROLE} eq 1"><a href="#"><span class="glyphicon glyphicon-th-list"> 管理帖子</span></a></li>
                         </ul>
                     </li>
                     <li>

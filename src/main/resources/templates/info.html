@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="icon/fkbbs.ico" ;>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!--
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    -->
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/js/bootstrap.js"></script>
+
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+
+    <link href="bootstrapValidator/bootstrapValidator.min.css" rel="stylesheet">
+    <script src="bootstrapValidator/bootstrapValidator.min.js"></script>
+
+    <title>个人中心</title>
+
+    <style>
+        html, body {
+            height: 1500px;
+            width: 100%;
+        }
+        .kratos-hentry.kratos-post-inner .kratos-post-meta .fa-thumbs-o-up,.kratos-post-meta i:not(:first-child) {
+            margin-left:12px
+        }
+        .kratos-hentry{margin-bottom:15px;background-color:#fff;box-shadow:0 2px 4px rgba(0,0,0,.1);border-radius:0;-webkit-transition:all .6s ease;transition:all .6s ease}
+        .container article.kratos-hentry:hover{box-shadow:0 8px 15px rgba(146,146,146,.39)}
+        .kratos-post-inner.kratos-hentry{padding:25px 10px 18px 10px}
+        .kratos-entry-header .kratos-post-meta a{font-size:13px;margin-right:10px;margin-bottom:20px;color:#777676}
+        .kratos-entry-header{margin-bottom:15px}
+        .kratos-entry-footer{color:#9d9d9d;margin:10px}
+        .kratos-entry-footer .footer-tag a{background-color:#aaa;border-radius:0;color:#fff;display:inline-block;font-size:12px;line-height:13px;margin:0 0 2px 5px;padding:3px 7px;position:relative}
+        .kratos-entry-footer .footer-tag a:focus,.kratos-entry-footer .footer-tag a:hover{background:#8d8d8d;color:#fff!important}
+        .kratos-entry-footer .footer-tag .pull-date{float:right;margin-top:5px;font-size:14px}
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="margin-bottom: 0;border: 0">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}">FK论坛</a>
+        </div>
+        <div>
+            <div th:if="${USER_NAME} ne null">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span>我的论坛</span><span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/info}"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
+                            <li><a th:href="@{/publish}"><span class="glyphicon glyphicon-tags"> 发布新帖</span></a></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a th:href="@{/logout}">
+                            <span class="glyphicon glyphicon-log-out"></span> 登出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="mainContent" style="padding: 20px;margin-top: 60px">
+    <div class="container" style="width: 65%;margin: 0 auto">
+        <div class="row">
+            <div class="footer-list text-center">
+                <article class="kratos-hentry clearfix" style="padding: 25px 10px 18px 10px" align="left">
+                    <div class="col-md-3">
+                        <div align="center" style="margin: 20px">
+                            <img align="center" style="height: 75px;width: 75px;border-radius: 50%" th:src="${login_user.getImg_url()}">
+                            <h3 th:text="${login_user.getUser_name()}"></h3>
+                        </div>
+                        <div>
+                            <ul class="nav navbar-default nav-stacked" align="center" style="background-color: rgba(255,255,255,0.84)">
+                                <li class=""th:classappend="${sector_now=='user_info'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-user">个人资料</span></a></li>
+                                <li class=""th:classappend="${sector_now=='my_theme'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-book">我的帖子</span></a></li>
+                                <li class=""th:classappend="${sector_now=='my_reply'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-comment">我的回复</span></a></li>
+                                <div class="panel-heading" th:if="${ROLE} eq 1">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="color: rgba(29,29,29,0.84)">
+                                            <span class="glyphicon glyphicon-wrench">管理</span><span class="caret"></span>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <ul class="nav navbar-default nav-stacked" style="background-color: rgba(255,255,255,0.84)" align="center">
+                                            <li class=""th:classappend="${sector_now=='manage_user'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-user">用户</span></a></li>
+                                            <li class=""th:classappend="${sector_now=='manage_theme'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-book">帖子</span></a></li>
+                                            <li class=""th:classappend="${sector_now=='manage_reply'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-comment">回复</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <li><a style="color: rgba(29,29,29,0.84)"><span class="glyphicon glyphicon-log-out">登出</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div id="user_info" th:if="${sector_now=='user_info'}">
+                            <h2>个人资料</h2><hr>
+                        </div>
+                        <div id="my_theme" th:if="${sector_now=='my_theme'}">
+                            <h2>我的帖子</h2><hr>
+                        </div>
+                        <div id="my_reply" th:if="${sector_now=='my_reply'}">
+                            <h2>我的回复</h2><hr>
+                        </div>
+                        <div id="manage_user" th:if="${sector_now=='manage_user'}">
+                            <h2>管理用户</h2><hr>
+                        </div>
+                        <div id="manage_theme" th:if="${sector_now=='manage_theme'}">
+                            <h2>管理帖子</h2><hr>
+                        </div>
+                        <div id="manage_reply" th:if="${sector_now=='manage_reply'}">
+                            <h2>管理回复</h2><hr>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" zIndex='-1' opacity='1' count='99' src="canvas/canvas-nest.js"></script>
+</body>
+</html>

@@ -34,22 +34,21 @@ public class User {
         Img_url = img_url;
     }
 
-    public User(String email_reg, String nickname, String sex, String birth, String i, String password) {
+    public User(String email_reg, String nickname, String sex, String birth, String password) {
         User_mail=email_reg;
         User_name=nickname;
         User_sex=sex;
         User_birth=birth;
-        User_sex=i;
         User_password=password;
         Role="0";
     }
 
-    public User(String user_mail, String user_name, String user_sex, String user_birth, String role, String user_password, String img_url) {
+    public User(String user_mail, String user_name, String user_sex, String user_birth, String user_password, String img_url) {
         User_mail = user_mail;
         User_name = user_name;
         User_sex = user_sex;
         User_birth = user_birth;
-        Role = role;
+        Role = "0";
         User_password = user_password;
         Img_url = img_url;
     }

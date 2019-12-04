@@ -45,7 +45,7 @@ public class Reg_controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            User user=new User(email_reg,nickname,sex,birth,sex,password,pathfile);
+            User user=new User(email_reg,nickname,sex,birth,password,pathfile);
             userService.insertImg(user);
             user=userService.getUser(email_reg);
             request.getSession().setAttribute("user",user);

@@ -58,10 +58,8 @@
                             <span>我的论坛</span><span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
+                            <li><a th:href="@{/info}"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
                             <li><a th:href="@{/publish}"><span class="glyphicon glyphicon-tags"> 发布新帖</span></a></a></li>
-                            <li th:if="${ROLE} eq 1"><a href="#"><span class="glyphicon glyphicon-wrench"> 管理用户</span></a></li>
-                            <li th:if="${ROLE} eq 1"><a href="#"><span class="glyphicon glyphicon-th-list"> 管理帖子</span></a></li>
                         </ul>
                     </li>
                     <li>
@@ -120,7 +118,7 @@
             </div>
             <div class="col-md-3 text-center" style="margin: 0 auto">
                 <div th:if="${USER_NAME} ne null">
-                    <div align="center" class="xh-wechat-social-widget">
+                    <div align="center" class="xh-wechat-social-widget" style="margin-top: 15px;margin-bottom: 15px">
                         <a title="SuzukiAina"><img th:src="${img_url}" class="avatar avatar-35 photo" height="35" width="35"></a>
                     </div>
                     <div th:if="${ROLE} eq 1">
@@ -130,7 +128,7 @@
                         <div class="xh-widget-title" th:text="'用户'+${USER_NAME}+'您好！'"></div>
                     </div>
                     <div class="xh-wechat-social-widget" style="padding-top: 15px;padding-bottom: 15px">
-                        <a class="btn btn-default" style="margin: 7px">个人中心</a>
+                        <a class="btn btn-default" th:href="@{/info}" style="margin: 7px">个人中心</a>
                         <a class="btn btn-default" th:href="@{/logout}" style="margin: 7px">退出登录</a>
                     </div>
                 </div>

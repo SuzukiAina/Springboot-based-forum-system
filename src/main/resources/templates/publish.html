@@ -74,8 +74,8 @@
                             <span class="glyphicon glyphicon-user" th:text="' hi! '+${USER_NAME}"/><span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-tags"> 发布新帖</span></a></a></li>
+                            <li><a th:href="@{/info}"><span class="glyphicon glyphicon-home"> 个人中心</span></a></li>
+                            <li><a th:href="@{/publish}"><span class="glyphicon glyphicon-tags"> 发布新帖</span></a></a></li>
                         </ul>
                     </li>
                     <li>
