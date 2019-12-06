@@ -38,14 +38,14 @@ public class Login_controller {
             User user=null;
             user=userService.getUser(email_login);
             request.getSession().setAttribute("user",user);
-            return "redirect:/main?page=1";
+            return "redirect:/";
         }
     }
 
     @GetMapping(value = "/logout")
     public String logout(HttpSession session){
         session.removeAttribute("user");
-        return "redirect:/main?page=1";
+        return "redirect:/";
     }
 
     @RequestMapping("/login")

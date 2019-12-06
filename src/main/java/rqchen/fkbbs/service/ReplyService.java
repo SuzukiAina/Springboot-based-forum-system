@@ -41,4 +41,6 @@ public class ReplyService {
     public List<Reply> getReplyasc(Integer Theme_id){return replyMapper.getReplybyThemeasc(Theme_id);}
 
     public List<Reply> getNew5(){return replyMapper.getNew5Reply();}
+
+    public List<Reply> getReplyU(int id){return replyMapper.getReplybyUser(id);}
 }

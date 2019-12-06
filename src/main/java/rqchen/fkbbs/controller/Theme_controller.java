@@ -88,7 +88,8 @@ public class Theme_controller {
         User user = (User)request.getSession().getAttribute("user");
         Reply reply=new Reply(theme_id,comment,Time,user.getUser_id());
         replyService.insert(reply);
-        return "redirect:/main?page=1";
+        themeService.lastreply(reply);
+        return "redirect:/theme?id="+theme_id;
     }
 
     @RequestMapping(value = "/verifylogin")

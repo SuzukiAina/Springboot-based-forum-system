@@ -23,6 +23,9 @@
             height: 1500px;
             width: 100%;
         }
+        a{
+            cursor: pointer;
+        }
         .kratos-hentry.kratos-post-inner .kratos-post-meta .fa-thumbs-o-up,.kratos-post-meta i:not(:first-child) {
             margin-left:12px
         }
@@ -38,13 +41,47 @@
     </style>
 </head>
 <body>
+<script type="text/javascript">
+    $(function () {
+        $('.form-horizontal').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: "glyphicon glyphicon-ok",//验证成功图标
+                invalid: 'glyphicon glyphicon-remove',//验证失败图标
+                validating: 'glyphicon glyphicon-refresh'//验证中图标
+            },
+            fields: {
+                name: {
+                    validators: {
+                        notEmpty: {
+                            message: '昵称不能为空'
+                        },
+                        stringLength: {
+                            max:8,
+                            message: '昵称不能大于八位字符'
+                        }
+                    }
+                },
+                myfile: {
+                    validators: {
+                        file: {
+                            extension: 'png,jpg,jpeg',
+                            type: 'image/png,image/jpg,image/jpeg',
+                            message: '请重新选择图片'
+                        }
+                    }
+                },
+            }
+        });
+    });
+</script>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="margin-bottom: 0;border: 0">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" th:href="@{/}">FK论坛</a>
         </div>
         <div>
-            <div th:if="${USER_NAME} ne null">
+            <div th:if="${login_user.getUser_name()} ne null">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -77,9 +114,9 @@
                         </div>
                         <div>
                             <ul class="nav navbar-default nav-stacked" align="center" style="background-color: rgba(255,255,255,0.84)">
-                                <li class=""th:classappend="${sector_now=='user_info'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-user">个人资料</span></a></li>
-                                <li class=""th:classappend="${sector_now=='my_theme'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-book">我的帖子</span></a></li>
-                                <li class=""th:classappend="${sector_now=='my_reply'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-comment">我的回复</span></a></li>
+                                <li class=""th:classappend="${sector_now=='user_info'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer" th:href="@{/info}"><span class="glyphicon glyphicon-user">个人资料</span></a></li>
+                                <li class=""th:classappend="${sector_now=='my_theme'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer" th:href="@{/mytheme}"><span class="glyphicon glyphicon-book">我的帖子</span></a></li>
+                                <li class=""th:classappend="${sector_now=='my_reply'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer" th:href="@{/myreply}"><span class="glyphicon glyphicon-comment">我的回复</span></a></li>
                                 <div class="panel-heading" th:if="${ROLE} eq 1">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="color: rgba(29,29,29,0.84)">
@@ -90,9 +127,9 @@
                                 <div id="collapseOne" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <ul class="nav navbar-default nav-stacked" style="background-color: rgba(255,255,255,0.84)" align="center">
-                                            <li class=""th:classappend="${sector_now=='manage_user'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-user">用户</span></a></li>
-                                            <li class=""th:classappend="${sector_now=='manage_theme'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-book">帖子</span></a></li>
-                                            <li class=""th:classappend="${sector_now=='manage_reply'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer"><span class="glyphicon glyphicon-comment">回复</span></a></li>
+                                            <li class=""th:classappend="${sector_now=='manage_user'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer" th:href="@{/manageuser}"><span class="glyphicon glyphicon-user">用户</span></a></li>
+                                            <li class=""th:classappend="${sector_now=='manage_theme'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer" th:href="@{/managetheme}"><span class="glyphicon glyphicon-book">帖子</span></a></li>
+                                            <li class=""th:classappend="${sector_now=='manage_reply'} ? 'active' : '' "><a style="color: rgba(29,29,29,0.84);font-size: 16px;cursor: pointer" th:href="@{/managereply}"><span class="glyphicon glyphicon-comment">回复</span></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -101,23 +138,505 @@
                         </div>
                     </div>
                     <div class="col-md-9">
-                        <div id="user_info" th:if="${sector_now=='user_info'}">
+                        <div id="user_info" th:if="${sector_now=='user_info'}" align="left">
                             <h2>个人资料</h2><hr>
+                            <form enctype="multipart/form-data" class="form-horizontal" th:action="@{info_update}" method="post">
+                                <div class="form-group">
+                                    <label for="id_myfile" class="col-sm-1 control-label" style="padding-left: 0">头像</label>
+                                    <div class="col-sm-8">
+                                        <img style="height: 75px;width: 75px" th:src="${login_user.getImg_url()}" id="id_img">
+                                        <input type="file" name="myfile" id="id_myfile" style="margin-top: 10px" accept="image/png,image/jpg,image/jpeg">
+                                        <script>
+                                            $('#id_myfile').change(function () {
+                                                // 先获取用户上传的文件对象
+                                                let fileObj = this.files[0];
+                                                // 生成一个文件读取的内置对象
+                                                let fileReader = new FileReader();
+                                                // 将文件对象传递给内置对象
+                                                fileReader.readAsDataURL(fileObj); //这是一个异步执行的过程，所以需要onload回调函数执行读取数据后的操作
+                                                // 将读取出文件对象替换到img标签
+                                                fileReader.onload = function(){  // 等待文件阅读器读取完毕再渲染图片
+                                                    $('#id_img').attr('src',fileReader.result)
+                                                }
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label" style="padding-left: 0">邮箱</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" th:text="${login_user.getUser_mail()}"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label" style="padding-left: 0">角色</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" th:if="${login_user.getRole()} eq 1">管理员</p>
+                                        <p class="form-control-static" th:if="${login_user.getRole()} eq 0">用户</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-1 control-label" style="padding-left: 0">昵称</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="name" class="form-control" id="name" th:value="${login_user.getUser_name()}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label" style="padding-left: 0">性别</label>
+                                    <div class="col-sm-8">
+                                        <p th:if="${login_user.getUser_sex()=='1'}" style="margin: 0 auto;font-size: 21px">🚹</p>
+                                        <p th:if="${login_user.getUser_sex()=='0'}" style="margin: 0 auto;font-size: 21px">🚺</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label" style="padding-left: 0">生日</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" th:text="${login_user.getUser_birth()}"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <input type="submit" class="btn btn-primary form-control" value="提交更改"></input>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div id="my_theme" th:if="${sector_now=='my_theme'}">
                             <h2>我的帖子</h2><hr>
+                            <div id="theme_number">
+                                <div align="right">
+                                    <p th:text="${my_themes.size()}+'个帖子'"></p>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="check"></th>
+                                    <th>帖子标题</th>
+                                    <th>日期</th>
+                                </tr>
+                                </thead>
+                                <tbody >
+                                <tr th:each="theme:${my_themes}">
+                                    <td width="5%"><input type="checkbox" name="row"></td>
+                                    <td width="60%" th:onmouseover="hover_theme([[${theme.getTheme_id()}]])" th:onmouseout="hoverover_theme([[${theme.getTheme_id()}]])">
+                                        <a th:text="${theme.getTheme_title()}" th:href="@{/theme(id=${theme.getTheme_id()})}">我的帖子标题</a><br>
+                                        <div th:id="${theme.getTheme_id()}" style="display: none">
+                                            <a th:href="@{/update_theme(id=${theme.getTheme_id()})}">编辑</a>|
+                                            <a th:href="@{/delete_theme(id=${theme.getTheme_id()})}">删除</a>
+                                        </div>
+                                    </td>
+                                    <script>
+                                        function hover_theme(id) {
+                                            var ID=parseInt(id);
+                                            var x=document.getElementById(ID);
+                                            x.style.display='block';
+                                        }
+                                        function hoverover_theme(id) {
+                                            var ID=parseInt(id);
+                                            var x=document.getElementById(ID);
+                                            x.style.display='none';
+                                        }
+                                    </script>
+                                    <td>
+                                        <div id="theme_time">
+                                            <p style="padding-bottom: 0px">发布时间:<br></p>
+                                            <p style="padding-bottom: 0px" th:text="${theme.getTheme_time()}">标题时间</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <script>
+                                document.getElementById("check").onclick = function(){
+                                    var checked = document.getElementById("check").checked;
+                                    var checkson = document.getElementsByName("row");
+                                    if(checked){
+                                        for(var i = 0; i < checkson.length ;i++){
+                                            checkson[i].checked = true;
+                                        }
+                                    }else{
+                                        for(var i = 0; i < checkson.length ;i++){
+                                            checkson[i].checked = false;
+                                        }
+                                    }
+                                }
+                            </script>
                         </div>
                         <div id="my_reply" th:if="${sector_now=='my_reply'}">
                             <h2>我的回复</h2><hr>
+                            <div id="reply_number">
+                                <div align="right">
+                                    <p th:text="${my_replies.size()}+'个回复'"></p>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="checkr"></th>
+                                    <th>回复内容</th>
+                                    <th>日期</th>
+                                </tr>
+                                </thead>
+                                <tbody >
+                                <tr th:each="reply:${my_replies}">
+                                    <td width="5%"><input type="checkbox" name="row"></td>
+                                    <td width="60%" th:onmouseover="hover_reply([[${reply.getReply_id()}]])" th:onmouseout="hoverover_reply([[${reply.getReply_id()}]])">
+                                        <a th:text="${reply.getReply_content()}" th:href="@{/theme(id=${reply.getTheme_id()})}">我的回复内容</a><br>
+                                        <div th:id="${reply.getReply_id()}" style="display: none">
+                                            <a th:href="@{/update_reply(id=${reply.getReply_id()})}">编辑</a>|
+                                            <a th:href="@{/delete_theme(id=${reply.getReply_id()})}">删除</a>
+                                        </div>
+                                    </td>
+                                    <script>
+                                        function hover_reply(id) {
+                                            var ID=parseInt(id);
+                                            var x=document.getElementById(ID);
+                                            x.style.display='block';
+                                        }
+                                        function hoverover_reply(id) {
+                                            var ID=parseInt(id);
+                                            var x=document.getElementById(ID);
+                                            x.style.display='none';
+                                        }
+                                    </script>
+                                    <td>
+                                        <div id="reply_time">
+                                            <p style="padding-bottom: 0px">发布时间:<br></p>
+                                            <p style="padding-bottom: 0px" th:text="${reply.getReply_time()}">标题时间</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <script>
+                                document.getElementById("checkr").onclick = function(){
+                                    var checked = document.getElementById("checkr").checked;
+                                    var checkson = document.getElementsByName("row");
+                                    if(checked){
+                                        for(var i = 0; i < checkson.length ;i++){
+                                            checkson[i].checked = true;
+                                        }
+                                    }else{
+                                        for(var i = 0; i < checkson.length ;i++){
+                                            checkson[i].checked = false;
+                                        }
+                                    }
+                                }
+                            </script>
                         </div>
                         <div id="manage_user" th:if="${sector_now=='manage_user'}">
                             <h2>管理用户</h2><hr>
+                            <div id="alluser">
+                                <div align="right">
+                                    <p th:text="${users.size()}+'个用户'"></p>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="checkau"></th>
+                                    <th>用户名</th>
+                                    <th>邮箱</th>
+                                    <th>角色</th>
+                                    <th>帖子数</th>
+                                    <th>回复数</th>
+                                </tr>
+                                </thead>
+                                <tbody >
+                                <tr th:each="user:${users}">
+                                    <td width="5%"><input type="checkbox" name="row"></td>
+                                    <td width="20%" th:onmouseover="hover_user([[${user.getUser_id()}]])" th:onmouseout="hoverover_user([[${user.getUser_id()}]])">
+                                        <div>
+                                            <img th:src="${user.getImg_url()}" style="height: 32px;width: 32px;margin-right: 0;">
+                                            <a th:text="${user.getUser_name()}">用户名</a><br>
+                                            <div th:id="${user.getUser_id()}" style="display: none">
+                                                <a th:href="@{/edit_user(id=${user.getUser_id()})}">编辑</a>|
+                                                <a th:href="@{/delete_user(id=${user.getUser_id()})}">删除</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <script>
+                                        function hover_user(id) {
+                                            var ID=parseInt(id);
+                                            var x=document.getElementById(ID);
+                                            x.style.display='block';
+                                        }
+                                        function hoverover_user(id) {
+                                            var ID=parseInt(id);
+                                            var x=document.getElementById(ID);
+                                            x.style.display='none';
+                                        }
+                                    </script>
+                                    <td width="25%" th:text="${user.getUser_mail()}"></td>
+                                    <td>
+                                        <div th:if="${user.getRole()} eq '1'">管理员</div>
+                                        <div th:if="${user.getRole()} eq '0'">用户</div>
+                                    </td>
+                                    <td th:text="${user.getMytheme().size()}">0</td>
+                                    <td th:text="${user.getMyreply().size()}">0</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <script>
+                                document.getElementById("checkau").onclick = function(){
+                                    var checked = document.getElementById("checkau").checked;
+                                    var checkson = document.getElementsByName("row");
+                                    if(checked){
+                                        for(var i = 0; i < checkson.length ;i++){
+                                            checkson[i].checked = true;
+                                        }
+                                    }else{
+                                        for(var i = 0; i < checkson.length ;i++){
+                                            checkson[i].checked = false;
+                                        }
+                                    }
+                                }
+                            </script>
+
                         </div>
                         <div id="manage_theme" th:if="${sector_now=='manage_theme'}">
                             <h2>管理帖子</h2><hr>
+                            <div id="alltheme_number">
+                                <div align="right">
+                                    <p th:text="${themes.size()}+'个帖子'"></p>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="checkat"></th>
+                                    <th>帖子标题</th>
+                                    <th>日期</th>
+                                </tr>
+                                </thead>
+                                <tbody >
+                                <tr th:each="theme:${themes}">
+                                    <td width="5%"><input type="checkbox" name="row"></td>
+                                    <td width="60%" th:onmouseover="hover_theme([[${theme.getTheme_id()}]])" th:onmouseout="hoverover_theme([[${theme.getTheme_id()}]])">
+                                        <a th:text="${theme.getTheme_title()}" th:href="@{/theme(id=${theme.getTheme_id()})}">帖子标题</a><br>
+                                        <div th:id="${theme.getTheme_id()}" style="display: none">
+                                            <a th:href="@{/update_theme(id=${theme.getTheme_id()})}">编辑</a>|
+                                            <a th:href="@{/delete_theme(id=${theme.getTheme_id()})}">删除</a>
+                                        </div>
+                                    </td>
+                                    <script>
+                                        function hover_theme(id) {
+                                            var ID=parseInt(id);
+                                            var x=document.getElementById(ID);
+                                            x.style.display='block';
+                                        }
+                                        function hoverover_theme(id) {
+                                            var ID=parseInt(id);
+                                            var x=document.getElementById(ID);
+                                            x.style.display='none';
+                                        }
+                                    </script>
+                                    <td>
+                                        <div id="alltheme_time">
+                                            <p style="padding-bottom: 0px">发布时间:<br></p>
+                                            <p style="padding-bottom: 0px" th:text="${theme.getTheme_time()}">标题时间</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <script>
+                                document.getElementById("checkat").onclick = function(){
+                                    var checked = document.getElementById("checkat").checked;
+                                    var checkson = document.getElementsByName("row");
+                                    if(checked){
+                                        for(var i = 0; i < checkson.length ;i++){
+                                            checkson[i].checked = true;
+                                        }
+                                    }else{
+                                        for(var i = 0; i < checkson.length ;i++){
+                                            checkson[i].checked = false;
+                                        }
+                                    }
+                                }
+                            </script>
                         </div>
                         <div id="manage_reply" th:if="${sector_now=='manage_reply'}">
                             <h2>管理回复</h2><hr>
+                            <div id="allreply_number">
+                                <div align="right">
+                                    <p th:text="${replies.size()}+'个回复'"></p>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="checkar"></th>
+                                    <th>回复内容</th>
+                                    <th>帖子名称</th>
+                                    <th>日期</th>
+                                </tr>
+                                </thead>
+                                <tbody >
+                                <tr th:each="reply:${replies}">
+                                    <td width="5%"><input type="checkbox" name="row"></td>
+                                    <td width="60%" th:onmouseover="hover_reply([[${reply.getReply_id()}]])" th:onmouseout="hoverover_reply([[${reply.getReply_id()}]])">
+                                        <a th:text="${reply.getReply_content()}" th:href="@{/theme(id=${reply.getTheme_id()})}">回复内容</a><br>
+                                        <div th:id="${reply.getReply_id()}" style="display: none">
+                                            <a>编辑</a>|
+                                            <a>删除</a>
+                                        </div>
+                                    </td>
+                                    <td><a th:text="${reply.getRTheme_title()}" th:href="@{/theme(id=${reply.getTheme_id()})}"></a></td>
+                                    <script>
+                                        function hover_reply(id) {
+                                            var ID=parseInt(id);
+                                            var x=document.getElementById(ID);
+                                            x.style.display='block';
+                                        }
+                                        function hoverover_reply(id) {
+                                            var ID=parseInt(id);
+                                            var x=document.getElementById(ID);
+                                            x.style.display='none';
+                                        }
+                                    </script>
+                                    <td>
+                                        <div id="allreply_time">
+                                            <p style="padding-bottom: 0px">回复时间:<br></p>
+                                            <p style="padding-bottom: 0px" th:text="${reply.getReply_time()}">标题时间</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <script>
+                                document.getElementById("checkar").onclick = function(){
+                                    var checked = document.getElementById("checkar").checked;
+                                    var checkson = document.getElementsByName("row");
+                                    if(checked){
+                                        for(var i = 0; i < checkson.length ;i++){
+                                            checkson[i].checked = true;
+                                        }
+                                    }else{
+                                        for(var i = 0; i < checkson.length ;i++){
+                                            checkson[i].checked = false;
+                                        }
+                                    }
+                                }
+                            </script>
+                        </div>
+                        <div id="edit_user" th:if="${sector_now=='edit_user'}">
+                            <h2>编辑用户</h2><hr>
+                            <div class="panel-group">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseInfo" th:text="'用户'+${edituser.getUser_name()}+'的个人资料'">
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseInfo" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <form enctype="multipart/form-data" class="form-horizontal" th:action="@{edituser_update}" method="post">
+                                                <input type="hidden" th:value="${edituser.getUser_id()}" name="edit_uid">
+                                                <div class="form-group">
+                                                    <label for="id_myfile" class="col-sm-1 control-label" style="padding-left: 0">头像</label>
+                                                    <div class="col-sm-8">
+                                                        <img style="height: 75px;width: 75px" th:src="${edituser.getImg_url()}" id="id_img2">
+                                                        <input type="file" name="myfile" id="id_myfile2" style="margin-top: 10px" accept="image/png,image/jpg,image/jpeg">
+                                                        <script>
+                                                            $('#id_myfile2').change(function () {
+                                                                // 先获取用户上传的文件对象
+                                                                let fileObj = this.files[0];
+                                                                // 生成一个文件读取的内置对象
+                                                                let fileReader = new FileReader();
+                                                                // 将文件对象传递给内置对象
+                                                                fileReader.readAsDataURL(fileObj); //这是一个异步执行的过程，所以需要onload回调函数执行读取数据后的操作
+                                                                // 将读取出文件对象替换到img标签
+                                                                fileReader.onload = function(){  // 等待文件阅读器读取完毕再渲染图片
+                                                                    $('#id_img2').attr('src',fileReader.result)
+                                                                }
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-1 control-label" style="padding-left: 0">邮箱</label>
+                                                    <div class="col-sm-8">
+                                                        <p class="form-control-static" th:text="${edituser.getUser_mail()}"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-1 control-label" style="padding-left: 0">邮箱</label>
+                                                    <div class="col-sm-8">
+                                                        <p class="form-control-static" th:if="${edituser.getRole()} eq 1">管理员</p>
+                                                        <p class="form-control-static" th:if="${edituser.getRole()} eq 0">用户</p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="name1" class="col-sm-1 control-label" style="padding-left: 0">昵称</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" name="name" class="form-control" id="name1" th:value="${edituser.getUser_name()}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-1 control-label" style="padding-left: 0">性别</label>
+                                                    <div class="col-sm-8">
+                                                        <p th:if="${edituser.getUser_sex()=='1'}" style="margin: 0 auto;font-size: 21px">🚹</p>
+                                                        <p th:if="${edituser.getUser_sex()=='0'}" style="margin: 0 auto;font-size: 21px">🚺</p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-1 control-label" style="padding-left: 0">生日</label>
+                                                    <div class="col-sm-8">
+                                                        <p class="form-control-static" th:text="${edituser.getUser_birth()}"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <input type="submit" class="btn btn-primary form-control" value="提交更改"></input>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseTheme" th:text="'用户'+${edituser.getUser_name()}+'的帖子列表'">
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTheme" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                            cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+                                            vice lomo.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseReply" th:text="'用户'+${edituser.getUser_name()}+'的回复列表'">
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseReply" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                            cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+                                            vice lomo.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="edit_theme" th:if="${sector_now=='edit_theme'}">
+                            <h2>编辑帖子</h2><hr>
+                        </div>
+                        <div id="edit_reply" th:if="${sector_now=='edit_reply'}">
+                            <h2>编辑回复</h2><hr>
                         </div>
                     </div>
                 </article>

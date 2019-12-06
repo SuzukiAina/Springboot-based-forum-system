@@ -28,6 +28,9 @@ public interface Replymapper {
     @Select("select * from REPLY where THEME_ID=#{Theme_id}")
     public List<Reply> getReplybyTheme(int Theme_id);
 
+    @Select("select * from REPLY where USER_ID=#{User_id}")
+    public List<Reply> getReplybyUser(int User_id);
+
     @Select("select * from REPLY where THEME_ID=#{Theme_id} order by REPLY_TIME desc limit 1")
     public Reply getNewReply(int Theme_id);
 

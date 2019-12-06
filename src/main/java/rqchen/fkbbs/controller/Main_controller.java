@@ -65,7 +65,7 @@ public class Main_controller {
     }
 
     @GetMapping(value = "/main")
-    public String main_page(@RequestParam(value ="page") int page,HttpServletRequest request,Model model){
+    public String main_page(@RequestParam(required = false,value ="page",defaultValue = "1") int page,HttpServletRequest request,Model model){
         //总主题帖数，分页器实现
         int count=themeService.getCount();
         int page_number=(count/20)+1;

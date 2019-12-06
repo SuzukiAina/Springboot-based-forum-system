@@ -1,6 +1,7 @@
 package rqchen.fkbbs.entity;
 
 import java.sql.Date;
+import java.util.List;
 
 public class User {
     String User_id;
@@ -11,6 +12,24 @@ public class User {
     String Role;
     String User_password;
     String Img_url;
+    List<Theme> Mytheme;
+    List<Reply> Myreply;
+
+    public List<Theme> getMytheme() {
+        return Mytheme;
+    }
+
+    public void setMytheme(List<Theme> mytheme) {
+        Mytheme = mytheme;
+    }
+
+    public List<Reply> getMyreply() {
+        return Myreply;
+    }
+
+    public void setMyreply(List<Reply> myreply) {
+        Myreply = myreply;
+    }
 
     @Override
     public String toString() {
@@ -61,6 +80,15 @@ public class User {
         User_birth = String.valueOf(user_birth);
         Role = String.valueOf(role);
         User_password = user_password;
+        Img_url = img_url;
+    }
+
+    public User(String user_id) {
+        User_id = user_id;
+    }
+
+    public User(String user_id, String img_url) {
+        User_id = user_id;
         Img_url = img_url;
     }
 

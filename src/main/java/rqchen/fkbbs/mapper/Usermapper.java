@@ -16,8 +16,10 @@ public interface Usermapper {
     @Delete("delete from USER where USER_ID=#{id}")
     public int delUserById(Integer id);
 
-    @Update("update USER set USER_MAIL=#{User_mail},USER_NAME=#{User_name},USER_SEX=#{User_sex}" +
-            ",USER_BIRTH=#{User_birth},USER_PASSWORD=#{User_password} where USER_ID=#{User_id}")
+    @Update("update USER set USER_NAME=#{User_name} where USER_ID=#{User_id}")
+    public int UpdateUserName(User user);
+
+    @Update("update USER set USER_NAME=#{User_name},IMG_URL=#{Img_url} where USER_ID=#{User_id}")
     public int UpdateUser(User user);
 
     @Insert("insert into USER(USER_ID,USER_MAIL,USER_NAME,USER_SEX,USER_BIRTH,ROLE,USER_PASSWORD) " +

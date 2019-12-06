@@ -12,7 +12,7 @@ public class UserService {
     @Autowired
     Usermapper usermapper;
 
-    public List<User> themeList(){ return usermapper.getAllUser(); }
+    public List<User> userList(){ return usermapper.getAllUser(); }
 
     public int insert(User user){
         return usermapper.InsertUser(user);
@@ -28,6 +28,10 @@ public class UserService {
 
     public int update(User user){
         return usermapper.UpdateUser(user);
+    }
+
+    public int updateName(User user){
+        return usermapper.UpdateUserName(user);
     }
 
     public User getById(Integer id) {

@@ -7,7 +7,16 @@ public class Reply {
     String Reply_time;
     String User_id;
     String User_name;
+    String RTheme_title;
     int Floor;
+
+    public String getRTheme_title() {
+        return RTheme_title;
+    }
+
+    public void setRTheme_title(String RTheme_title) {
+        this.RTheme_title = RTheme_title;
+    }
 
     public int getFloor() {
         return Floor;
