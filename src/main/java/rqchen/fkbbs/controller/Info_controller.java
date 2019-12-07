@@ -136,6 +136,10 @@ public class Info_controller {
         }
         model.addAttribute("login_user",user);
         List<Theme> themeList=themeService.themeList();
+        for(Theme mtheme:themeList){
+            int uid=Integer.parseInt(mtheme.getUser_id());
+            mtheme.setUser_name(userService.getUserName(uid));
+        }
         model.addAttribute("themes",themeList);
         return "info";
     }
@@ -184,15 +188,17 @@ public class Info_controller {
         model.addAttribute("login_user",user);
         List<Reply> replyListList=replyService.replyList();
         for(Reply reply:replyListList){
-            int id=Integer.parseInt(reply.getTheme_id());
-            reply.setRTheme_title(themeService.themeTitle(id));
+            int tid=Integer.parseInt(reply.getTheme_id());
+            int uid=Integer.parseInt(reply.getUser_id());
+            reply.setRTheme_title(themeService.themeTitle(tid));
+            reply.setUser_name(userService.getUserName(uid));
         }
         model.addAttribute("replies",replyListList);
         return "info";
     }
 
     @RequestMapping("/edit_user")
-    public String edituser(@RequestParam(required = false,value ="id") int user_id,HttpServletRequest request, Model model){
+    public String edituser(@RequestParam(value ="uid") int user_id,HttpServletRequest request, Model model){
         model.addAttribute("sector_now","edit_user");
         User user = (User)request.getSession().getAttribute("user");
         if(user==null){
@@ -210,9 +216,62 @@ public class Info_controller {
         User edituser=userService.getById(user_id);
         edituser.setMyreply(replyService.getReplyU(user_id));
         edituser.setMytheme(themeService.mythemeList(user_id));
+        for(Reply reply:edituser.getMyreply()){
+            int id=Integer.parseInt(reply.getTheme_id());
+            reply.setRTheme_title(themeService.themeTitle(id));
+        }
         model.addAttribute("edituser",edituser);
         model.addAttribute("edituser_theme",edituser.getMytheme());
         model.addAttribute("edituser_reply",edituser.getMyreply());
+        return "info";
+    }
+
+    @RequestMapping("/edit_theme")
+    public String edit_theme(HttpServletRequest request,@RequestParam("tid")int theme_id, Model model){
+        model.addAttribute("sector_now","edit_theme");
+        User user = (User)request.getSession().getAttribute("user");
+        if(user==null){
+            return "redirect:/";
+        }
+        int login_id=Integer.parseInt(user.getUser_id());
+        Theme edit_theme=themeService.getById(theme_id);
+        String role=user.getRole();
+        if(role.equals("1")){
+            model.addAttribute("ROLE",1);
+            model.addAttribute("login_user",user);
+            model.addAttribute("edit_theme",edit_theme);
+        }else {
+            model.addAttribute("ROLE",0);
+            model.addAttribute("login_user",user);
+            System.out.println("帖子uid为"+themeService.getUIDbt(theme_id));
+            System.out.println("登陆uid为"+login_id);
+            if(Integer.parseInt(themeService.getUIDbt(theme_id))!=login_id){
+                return "redirect:/info";
+            }else{
+                model.addAttribute("edit_theme",edit_theme);
+            }
+        }
+        return "info";
+    }
+
+    @RequestMapping("/edit_reply")
+    public String edit_reply(HttpServletRequest request,@RequestParam("rid")int reply_id, Model model){
+        model.addAttribute("sector_now","edit_reply");
+        User user = (User)request.getSession().getAttribute("user");
+        if(user==null){
+            return "redirect:/";
+        }
+        int login_id=Integer.parseInt(user.getUser_id());
+        String role=user.getRole();
+        if(role.equals("1")){
+            model.addAttribute("ROLE",1);
+        }else {
+            model.addAttribute("ROLE",0);
+            return "redirect:/info";
+        }
+        model.addAttribute("login_user",user);
+        Reply edit_reply=replyService.getById(reply_id);
+        model.addAttribute("edit_reply",edit_reply);
         return "info";
     }
 

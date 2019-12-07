@@ -34,4 +34,7 @@ public interface Thememapper {
 
     @Update("update THEME set LAST_REPLY=#{Reply_time} where THEME_ID=#{Theme_id}")
     public int UpdateLastReply(Reply reply);
+
+    @Select("select USER_ID from THEME where THEME_ID=#{id}")
+    public String getUIDbytheme(Integer id);
 }

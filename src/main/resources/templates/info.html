@@ -222,8 +222,8 @@
                                     <td width="60%" th:onmouseover="hover_theme([[${theme.getTheme_id()}]])" th:onmouseout="hoverover_theme([[${theme.getTheme_id()}]])">
                                         <a th:text="${theme.getTheme_title()}" th:href="@{/theme(id=${theme.getTheme_id()})}">我的帖子标题</a><br>
                                         <div th:id="${theme.getTheme_id()}" style="display: none">
-                                            <a th:href="@{/update_theme(id=${theme.getTheme_id()})}">编辑</a>|
-                                            <a th:href="@{/delete_theme(id=${theme.getTheme_id()})}">删除</a>
+                                            <a th:href="@{/edit_theme(tid=${theme.getTheme_id()})}">编辑</a>|
+                                            <a th:href="@{/delete_theme(tid=${theme.getTheme_id()})}">删除</a>
                                         </div>
                                     </td>
                                     <script>
@@ -351,8 +351,8 @@
                                             <img th:src="${user.getImg_url()}" style="height: 32px;width: 32px;margin-right: 0;">
                                             <a th:text="${user.getUser_name()}">用户名</a><br>
                                             <div th:id="${user.getUser_id()}" style="display: none">
-                                                <a th:href="@{/edit_user(id=${user.getUser_id()})}">编辑</a>|
-                                                <a th:href="@{/delete_user(id=${user.getUser_id()})}">删除</a>
+                                                <a th:href="@{/edit_user(uid=${user.getUser_id()})}">编辑</a>|
+                                                <a th:href="@{/delete_user(uid=${user.getUser_id()})}">删除</a>
                                             </div>
                                         </div>
                                     </td>
@@ -407,17 +407,18 @@
                                 <tr>
                                     <th><input type="checkbox" id="checkat"></th>
                                     <th>帖子标题</th>
+                                    <th>发布人</th>
                                     <th>日期</th>
                                 </tr>
                                 </thead>
                                 <tbody >
                                 <tr th:each="theme:${themes}">
                                     <td width="5%"><input type="checkbox" name="row"></td>
-                                    <td width="60%" th:onmouseover="hover_theme([[${theme.getTheme_id()}]])" th:onmouseout="hoverover_theme([[${theme.getTheme_id()}]])">
+                                    <td width="50%" th:onmouseover="hover_theme([[${theme.getTheme_id()}]])" th:onmouseout="hoverover_theme([[${theme.getTheme_id()}]])">
                                         <a th:text="${theme.getTheme_title()}" th:href="@{/theme(id=${theme.getTheme_id()})}">帖子标题</a><br>
                                         <div th:id="${theme.getTheme_id()}" style="display: none">
-                                            <a th:href="@{/update_theme(id=${theme.getTheme_id()})}">编辑</a>|
-                                            <a th:href="@{/delete_theme(id=${theme.getTheme_id()})}">删除</a>
+                                            <a th:href="@{/edit_theme(tid=${theme.getTheme_id()})}">编辑</a>|
+                                            <a th:href="@{/delete_theme(tid=${theme.getTheme_id()})}">删除</a>
                                         </div>
                                     </td>
                                     <script>
@@ -432,6 +433,9 @@
                                             x.style.display='none';
                                         }
                                     </script>
+                                    <td>
+                                        <a th:text="${theme.getUser_name()}" th:href="@{/edit_user(uid=${theme.getUser_id()})}"></a>
+                                    </td>
                                     <td>
                                         <div id="alltheme_time">
                                             <p style="padding-bottom: 0px">发布时间:<br></p>
@@ -470,13 +474,14 @@
                                     <th><input type="checkbox" id="checkar"></th>
                                     <th>回复内容</th>
                                     <th>帖子名称</th>
+                                    <th>发布人</th>
                                     <th>日期</th>
                                 </tr>
                                 </thead>
                                 <tbody >
                                 <tr th:each="reply:${replies}">
                                     <td width="5%"><input type="checkbox" name="row"></td>
-                                    <td width="60%" th:onmouseover="hover_reply([[${reply.getReply_id()}]])" th:onmouseout="hoverover_reply([[${reply.getReply_id()}]])">
+                                    <td width="50%" th:onmouseover="hover_reply([[${reply.getReply_id()}]])" th:onmouseout="hoverover_reply([[${reply.getReply_id()}]])">
                                         <a th:text="${reply.getReply_content()}" th:href="@{/theme(id=${reply.getTheme_id()})}">回复内容</a><br>
                                         <div th:id="${reply.getReply_id()}" style="display: none">
                                             <a>编辑</a>|
@@ -496,6 +501,9 @@
                                             x.style.display='none';
                                         }
                                     </script>
+                                    <td>
+                                        <a th:text="${reply.getUser_name()}" th:href="@{/edit_user(uid=${reply.getUser_id()})}"></a>
+                                    </td>
                                     <td>
                                         <div id="allreply_time">
                                             <p style="padding-bottom: 0px">回复时间:<br></p>
@@ -608,9 +616,65 @@
                                     </div>
                                     <div id="collapseTheme" class="panel-collapse collapse">
                                         <div class="panel-body">
-                                            Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                            cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                                            vice lomo.
+                                            <div id="edittheme_number">
+                                                <div align="right">
+                                                    <p th:text="${edituser_theme.size()}+'个帖子'"></p>
+                                                </div>
+                                            </div>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th><input type="checkbox" id="checket"></th>
+                                                    <th>帖子标题</th>
+                                                    <th>日期</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody >
+                                                <tr th:each="theme:${edituser_theme}">
+                                                    <td width="5%"><input type="checkbox" name="row"></td>
+                                                    <td width="60%" th:onmouseover="hover_theme([[${theme.getTheme_id()}]])" th:onmouseout="hoverover_theme([[${theme.getTheme_id()}]])">
+                                                        <a th:text="${theme.getTheme_title()}" th:href="@{/theme(id=${theme.getTheme_id()})}">帖子标题</a><br>
+                                                        <div th:id="${theme.getTheme_id()}" style="display: none">
+                                                            <a th:href="@{/edit_theme(tid=${theme.getTheme_id()})}">编辑</a>|
+                                                            <a th:href="@{/delete_theme(tid=${theme.getTheme_id()})}">删除</a>
+                                                        </div>
+                                                    </td>
+                                                    <script>
+                                                        function hover_theme(id) {
+                                                            var ID=parseInt(id);
+                                                            var x=document.getElementById(ID);
+                                                            x.style.display='block';
+                                                        }
+                                                        function hoverover_theme(id) {
+                                                            var ID=parseInt(id);
+                                                            var x=document.getElementById(ID);
+                                                            x.style.display='none';
+                                                        }
+                                                    </script>
+                                                    <td>
+                                                        <div id="edittheme_time">
+                                                            <p style="padding-bottom: 0px">发布时间:<br></p>
+                                                            <p style="padding-bottom: 0px" th:text="${theme.getTheme_time()}">标题时间</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <script>
+                                                document.getElementById("checket").onclick = function(){
+                                                    var checked = document.getElementById("checket").checked;
+                                                    var checkson = document.getElementsByName("row");
+                                                    if(checked){
+                                                        for(var i = 0; i < checkson.length ;i++){
+                                                            checkson[i].checked = true;
+                                                        }
+                                                    }else{
+                                                        for(var i = 0; i < checkson.length ;i++){
+                                                            checkson[i].checked = false;
+                                                        }
+                                                    }
+                                                }
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -624,9 +688,67 @@
                                     </div>
                                     <div id="collapseReply" class="panel-collapse collapse">
                                         <div class="panel-body">
-                                            Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                            cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                                            vice lomo.
+                                            <div id="editreply_number">
+                                                <div align="right">
+                                                    <p th:text="${edituser_reply.size()}+'个回复'"></p>
+                                                </div>
+                                            </div>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th><input type="checkbox" id="checkrr"></th>
+                                                    <th>回复内容</th>
+                                                    <th>帖子名称</th>
+                                                    <th>日期</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody >
+                                                <tr th:each="reply:${edituser_reply}">
+                                                    <td width="5%"><input type="checkbox" name="row"></td>
+                                                    <td width="60%" th:onmouseover="hover_reply([[${reply.getReply_id()}]])" th:onmouseout="hoverover_reply([[${reply.getReply_id()}]])">
+                                                        <a th:text="${reply.getReply_content()}" th:href="@{/theme(id=${reply.getTheme_id()})}">回复内容</a><br>
+                                                        <div th:id="${reply.getReply_id()}" style="display: none">
+                                                            <a>编辑</a>|
+                                                            <a>删除</a>
+                                                        </div>
+                                                    </td>
+                                                    <td><a th:text="${reply.getRTheme_title()}" th:href="@{/theme(id=${reply.getTheme_id()})}"></a></td>
+                                                    <script>
+                                                        function hover_reply(id) {
+                                                            var ID=parseInt(id);
+                                                            var x=document.getElementById(ID);
+                                                            x.style.display='block';
+                                                        }
+                                                        function hoverover_reply(id) {
+                                                            var ID=parseInt(id);
+                                                            var x=document.getElementById(ID);
+                                                            x.style.display='none';
+                                                        }
+                                                    </script>
+                                                    <td>
+                                                        <div id="editreply_time">
+                                                            <p style="padding-bottom: 0px">回复时间:<br></p>
+                                                            <p style="padding-bottom: 0px" th:text="${reply.getReply_time()}">标题时间</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <script>
+                                                document.getElementById("checker").onclick = function(){
+                                                    var checked = document.getElementById("checker").checked;
+                                                    var checkson = document.getElementsByName("row");
+                                                    if(checked){
+                                                        for(var i = 0; i < checkson.length ;i++){
+                                                            checkson[i].checked = true;
+                                                        }
+                                                    }else{
+                                                        for(var i = 0; i < checkson.length ;i++){
+                                                            checkson[i].checked = false;
+                                                        }
+                                                    }
+                                                }
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -634,6 +756,25 @@
                         </div>
                         <div id="edit_theme" th:if="${sector_now=='edit_theme'}">
                             <h2>编辑帖子</h2><hr>
+                            <form class="form-horizontal" th:action="@{theme_update}" method="post">
+                                <div class="form-group">
+                                    <label for="theme_title" class="col-sm-1 control-label" style="padding-left: 0">帖子标题</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="theme_title" class="form-control" id="theme_title" th:value="${edit_theme.getTheme_title()}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="theme_content" class="col-sm-1 control-label" style="padding-left: 0">帖子内容</label>
+                                    <div class="col-sm-8">
+                                        <textarea name="theme_content" id="theme_content" class="form-control" cols="30" rows="8" th:text="${edit_theme.getTheme_content()}"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <input type="submit" class="btn btn-primary form-control" value="提交更改"></input>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div id="edit_reply" th:if="${sector_now=='edit_reply'}">
                             <h2>编辑回复</h2><hr>

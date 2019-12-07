@@ -40,4 +40,6 @@ public class ThemeService {
     public int lastreply(Reply reply){return themeMapper.UpdateLastReply(reply);}
 
     public String themeTitle(int theme_id){return  themeMapper.getThemeTitle(theme_id);}
+
+    public String getUIDbt(Integer theme_id) { return themeMapper.getUIDbytheme(theme_id); }
 }
