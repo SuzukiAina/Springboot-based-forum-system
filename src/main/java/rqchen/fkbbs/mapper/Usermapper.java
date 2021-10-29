@@ -10,8 +10,12 @@ public interface Usermapper {
     @Select("select * from USER")
     public List<User> getAllUser();
 
+    @Select("select * from USER where USER_NAME like '%${User_name}%'")
+    public List<User> searchUsername(String User_name);
+
     @Select("select * from USER where USER_ID=#{id}")
     public User getUserById(Integer id);
+
 
     @Delete("delete from USER where USER_ID=#{id}")
     public int delUserById(Integer id);

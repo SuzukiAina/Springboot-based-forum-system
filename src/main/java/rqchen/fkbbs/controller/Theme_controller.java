@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,6 +40,7 @@ public class Theme_controller {
             String date=reply.getReply_time().substring(5,10);
             reply.setUser_name(userService.getUserName(user_id));
             reply.setReply_time(date);
+            reply.setUser_img(userService.getById(user_id).getImg_url());
         }
         model.addAttribute("new5",replyList5);
         //主题帖展示
@@ -58,10 +58,12 @@ public class Theme_controller {
             floor=floor+1;
             int user=Integer.parseInt(reply.getUser_id());
             String name=userService.getUserName(user);
+            User replyuser=userService.getById(Integer.parseInt(reply.getUser_id()));
             reply.setUser_name(name);
             String date=reply.getReply_time().substring(5,10);
             reply.setReply_time(date);
             reply.setFloor(floor);
+            reply.setUser_img(replyuser.getImg_url());
         }
         model.addAttribute("replies",replyList);
 
@@ -77,6 +79,8 @@ public class Theme_controller {
             model.addAttribute("ROLE",0);
         }
         model.addAttribute("USER_NAME",user.getUser_name());
+        model.addAttribute("login_user",user);
+        model.addAttribute("img_url",user.getImg_url());
         return "theme_content";
     }
 

@@ -11,6 +11,23 @@ public interface Thememapper {
     @Select("select * from THEME order by LAST_REPLY desc")
     public List<Theme> getAllTheme();
 
+    @Select("SELECT *\n" +
+            "FROM THEME\n" +
+            "WHERE USER_ID IN\n" +
+            "    (SELECT USER_ID\n" +
+            "     FROM USER\n" +
+            "     WHERE USER_NAME LIKE  '%${user_name}%');")
+    public List<Theme> searchThemebyUsername(String user_name);
+
+    @Select("select * from THEME where THEME_TITLE like '%${search_title}%' order by LAST_REPLY desc")
+    public List<Theme> searchThemebyTitle(String search_title);
+
+    @Select("select * from THEME where THEME_Content like '%${search_content}%' order by LAST_REPLY desc")
+    public List<Theme> searchThemebyContent(String search_content);
+
+    @Select("select * from THEME where THEME_TITLE like '%${search_title}%' OR THEME_CONTENT like '%${search_content}%' order by LAST_REPLY desc")
+    public List<Theme> searchThemebyAll(String search_title,String search_content);
+
     @Select("select * from THEME where THEME_ID=#{id}")
     public Theme getThemeById(Integer id);
 

@@ -8,7 +8,16 @@ public class Reply {
     String User_id;
     String User_name;
     String RTheme_title;
+    String User_img;
     int Floor;
+
+    public String getUser_img() {
+        return User_img;
+    }
+
+    public void setUser_img(String user_img) {
+        User_img = user_img;
+    }
 
     public String getRTheme_title() {
         return RTheme_title;

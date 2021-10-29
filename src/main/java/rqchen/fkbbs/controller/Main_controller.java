@@ -15,12 +15,6 @@ import rqchen.fkbbs.service.UserService;
 
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,15 +27,6 @@ public class Main_controller {
     UserService userService;
     @Autowired
     ReplyService replyService;
-
-    @RequestMapping("/hello")
-    public String hello(){
-        Date date=new Date();     //获取一个Date对象
-        DateFormat simpleDateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   //创建一个格式化日期对象
-        String Time = simpleDateFormat.format(date);   //格式化后的时间
-        System.out.println(Time);
-        return "hello";
-    }
     
     @RequestMapping(value = "/verifymail")
     @ResponseBody
@@ -65,9 +50,17 @@ public class Main_controller {
     }
 
     @GetMapping(value = "/main")
-    public String main_page(@RequestParam(required = false,value ="page",defaultValue = "1") int page,HttpServletRequest request,Model model){
+    public String main_page(@RequestParam(required = false,value ="page",defaultValue = "1") int page,
+                            @RequestParam(required = false,value ="search_content") String search_content,
+                            HttpServletRequest request,Model model){
+        List<Theme> themeList=null;
+        if(search_content!=null){
+            themeList=themeService.searchbyAll(search_content,search_content);
+        }else{
+            themeList=themeService.themeList();
+        }
         //总主题帖数，分页器实现
-        int count=themeService.getCount();
+        int count=themeList.size();
         int page_number=(count/20)+1;
         int min_page,max_page;
         if(page_number>4){
@@ -82,7 +75,6 @@ public class Main_controller {
         model.addAttribute("min_page",min_page);
         model.addAttribute("max_page",max_page);
 
-        List<Theme> themeList=themeService.themeList();
         int min_num=(page-1)*20;
         int max_num;
         if(count>(page*20)){
@@ -111,8 +103,9 @@ public class Main_controller {
         for(Reply reply:replyList5){
             int user_id=Integer.parseInt(reply.getUser_id());
             String date=reply.getReply_time().substring(5,10);
-            reply.setUser_name(userService.getUserName(user_id));
+            reply.setUser_name(userService.getById(user_id).getUser_name());
             reply.setReply_time(date);
+            reply.setUser_img(userService.getById(user_id).getImg_url());
         }
         model.addAttribute("new5",replyList5);
 
@@ -130,6 +123,11 @@ public class Main_controller {
         model.addAttribute("USER_NAME",user.getUser_name());
         model.addAttribute("img_url",user.getImg_url());
         return "main";
+    }
+
+    @RequestMapping("/main_search")
+    public String main_search(@RequestParam("search_content")String search_content){
+        return "redirect:/main?search_content="+search_content;
     }
 
     @GetMapping(value = "")

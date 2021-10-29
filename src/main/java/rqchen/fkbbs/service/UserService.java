@@ -14,6 +14,8 @@ public class UserService {
 
     public List<User> userList(){ return usermapper.getAllUser(); }
 
+    public List<User> searchName(String user_name){ return usermapper.searchUsername(user_name); }
+
     public int insert(User user){
         return usermapper.InsertUser(user);
     }

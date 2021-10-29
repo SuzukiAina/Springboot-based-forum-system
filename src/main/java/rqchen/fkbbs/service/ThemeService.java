@@ -17,6 +17,14 @@ public class ThemeService {
         return themeMapper.getAllTheme();
     }
 
+    public List<Theme> searchbyTitle(String theme_title){return themeMapper.searchThemebyTitle(theme_title);}
+
+    public List<Theme> searchbyAll(String theme_title,String theme_content){return themeMapper.searchThemebyAll(theme_title,theme_content);}
+
+    public List<Theme> searchbyContent(String theme_content){return themeMapper.searchThemebyContent(theme_content);}
+
+    public List<Theme> searchbyUsername(String user_name){return themeMapper.searchThemebyUsername(user_name);}
+
     public int insert(Theme theme){
         return themeMapper.InsertTheme(theme);
     }

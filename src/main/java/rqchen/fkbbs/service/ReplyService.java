@@ -16,6 +16,10 @@ public class ReplyService {
         return replyMapper.getAllReply();
     }
 
+    public List<Reply> searchContent(String reply_content){return replyMapper.searchReplybyContent(reply_content);}
+
+    public List<Reply> searchUsername(String user_name){return replyMapper.searchReplybyUsername(user_name);}
+
     public int insert(Reply reply){
         return replyMapper.InsertReply(reply);
     }
@@ -43,4 +47,6 @@ public class ReplyService {
     public List<Reply> getNew5(){return replyMapper.getNew5Reply();}
 
     public List<Reply> getReplyU(int id){return replyMapper.getReplybyUser(id);}
+
+    public String getUIDbr(int Reply_id){return replyMapper.getUIDbyReply(Reply_id);}
 }
